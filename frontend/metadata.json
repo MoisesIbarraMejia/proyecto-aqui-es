@@ -1,0 +1,6 @@
+{
+  "name": "GeoAnalytics Pro",
+  "description": "Professional GIS and geospatial intelligence services for business location optimization.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

@@ -1,0 +1,73 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --color-brand-bg: #ffffff;
+  --color-brand-text: #0f172a;
+  --color-brand-primary: #004b93;
+  --color-brand-secondary: #0088cc;
+  --color-brand-accent: #f0f9ff;
+  --color-brand-muted: #64748b;
+  --color-brand-border: #f1f5f9;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-family: var(--font-sans);
+  background-color: var(--color-brand-bg);
+  color: var(--color-brand-text);
+}
+
+.immersive-grid {
+  background-image: 
+    linear-gradient(to right, rgba(0, 75, 147, 0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0, 75, 147, 0.03) 1px, transparent 1px);
+  background-size: 50px 50px;
+}
+
+.glass {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.shadow-premium {
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 20px 25px -5px rgb(0 0 0 / 0.05);
+}
+
+/* Animations */
+.reveal, .reveal-left, .reveal-right {
+  opacity: 0;
+  transition: all 1s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.reveal { transform: translateY(30px); }
+.reveal-left { transform: translateX(-30px); }
+.reveal-right { transform: translateX(30px); }
+
+.reveal.active, .reveal-left.active, .reveal-right.active {
+  opacity: 1;
+  transform: translate(0, 0);
+}
+
+.animate-float {
+    animation: float 4s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+.progress-bar {
+    transition: width 2s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
