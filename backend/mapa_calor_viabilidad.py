@@ -624,26 +624,26 @@ if __name__ == "__main__":
     mejor   = resultado["mejor_coordenada"]
     config  = resultado["configuracion"]
 
-    print(f"\n📍 Centro del análisis : ({config['punto_central']['lat']}, {config['punto_central']['lng']})")
-    print(f"🏪 Giro analizado      : {config['giro_negocio']}")
-    print(f"📏 Radio / Paso        : {config['radio_busqueda_m']}m / {config['paso_metros']}m")
-    print(f"🔵 Total puntos        : {resumen['total_puntos_analizados']}")
-    print(f"🟢 Puntos calientes (≥{config['umbral_caliente']}) : {resumen['puntos_calientes']}")
-    print(f"🟡 Puntos tibios      : {resumen['puntos_tibios']}")
-    print(f"🔴 Puntos fríos       : {resumen['puntos_frios']}")
-    print(f"📊 Score promedio     : {resumen['score_promedio']}/100")
-    print(f"✅ Cobertura viable   : {resumen['cobertura_viable_pct']}%")
-    print(f"\n🏆 MEJOR COORDENADA:")
+    print(f"\n Centro del análisis : ({config['punto_central']['lat']}, {config['punto_central']['lng']})")
+    print(f" Giro analizado      : {config['giro_negocio']}")
+    print(f" Radio / Paso        : {config['radio_busqueda_m']}m / {config['paso_metros']}m")
+    print(f" Total puntos        : {resumen['total_puntos_analizados']}")
+    print(f" Puntos calientes (≥{config['umbral_caliente']}) : {resumen['puntos_calientes']}")
+    print(f" Puntos tibios      : {resumen['puntos_tibios']}")
+    print(f" Puntos fríos       : {resumen['puntos_frios']}")
+    print(f" Score promedio     : {resumen['score_promedio']}/100")
+    print(f" Cobertura viable   : {resumen['cobertura_viable_pct']}%")
+    print(f"\n MEJOR COORDENADA:")
     print(f"   → ({mejor['lat']}, {mejor['lng']})")
     print(f"   → Score: {mejor['score']}/100 ({mejor['clasificacion']})")
     print(f"   → Distancia al pin: {mejor['distancia_al_pin_m']}m")
     print(f"   → {mejor['explicacion']}")
-    print(f"\n💡 Interpretación zona:")
+    print(f"\n Interpretación zona:")
     print(f"   {resumen['interpretacion']}")
 
     # ── JSON completo (primeros 3 puntos del heatmap como muestra) ────────────
     muestra = {**resultado, "heatmap_data": resultado["heatmap_data"][:3]}
-    print(f"\n📦 Muestra JSON (primeros 3 puntos de {len(resultado['heatmap_data'])} en heatmap_data):")
+    print(f"\n Muestra JSON (primeros 3 puntos de {len(resultado['heatmap_data'])} en heatmap_data):")
     print(json.dumps(muestra, ensure_ascii=False, indent=2))
 
     print("\n" + "═" * 70)

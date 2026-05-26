@@ -13,7 +13,8 @@ Arquitectura modular de 4 pilares:
 Para activar datos reales, sustituye los métodos prefijados con
 `_mock_` por tus propias llamadas a la API del DENUE con credenciales.
 """
-
+import os
+import requests
 import math
 import json
 import logging
@@ -154,34 +155,46 @@ class ResultadoScore:
 
 def _mock_obtener_negocios_denue(lat: float, lon: float, codigos_scian: list[str]) -> list[dict]:
     """
-    ⚠️  MOCK — Reemplazar con llamada real a la API del DENUE (INEGI).
-
-    Endpoint real: https://www.inegi.org.mx/app/api/denue/v1/consulta/
-    Parámetros clave: latitud, longitud, distancia (en metros), clave_actividad
-
-    Ejemplo de llamada real:
-        url = (
-            f"https://www.inegi.org.mx/app/api/denue/v1/consulta/"
-            f"Buscar/{clave_scian}/{lat},{lon}/{RADIO_ANALISIS_M}/1/10/"
-            f"json/{TU_TOKEN}/"
-        )
-        response = requests.get(url, timeout=10)
-        return response.json()
-
-    Returns:
-        Lista de dicts con keys: nombre, latitud, longitud, clave_actividad
+    Sustitución de MOCK por consulta real a la API del DENUE (INEGI).
+    Mantiene el nombre original para no romper mapa_calor_viabilidad.py.
     """
-    logger.info(f"[MOCK] Consultando DENUE — lat={lat}, lon={lon}, SCIAN={codigos_scian}")
-    # Datos simulados: 2 competidores con coordenadas cercanas a CDMX-Centro
-    return [
-        {"nombre": "Negocio Competidor A", "latitud": lat + 0.002, "longitud": lon + 0.001, "clave_actividad": codigos_scian[0]},
-        {"nombre": "Negocio Competidor B", "latitud": lat - 0.001, "longitud": lon + 0.003, "clave_actividad": codigos_scian[0]},
-    ]
+    logger.info(f"Consultando DENUE REAL — lat={lat}, lon={lon}, SCIAN={codigos_scian}")
+    
+    # 1. Creamos la lista vacía donde guardaremos los resultados de la API
+    results = []
+
+    try:
+        # 2. Inyectamos el bloque de código de la FASE 2
+        for codigo in codigos_scian[:2]:  # limitar peticiones para no saturar la API
+            url = (
+                f"https://www.inegi.org.mx/app/api/denue/v1/consulta/"
+                f"Buscar/{codigo}/{lat},{lon}/{RADIO_ANALISIS_M}/"
+                f"{os.getenv('DENUE_TOKEN')}/"
+            )
+            
+            resp = requests.get(url, timeout=8)
+            items = resp.json() if resp.ok else []
+            
+            # Procesamos cada establecimiento regresado por el INEGI
+            for item in (items if isinstance(items, list) else []):
+                results.append({
+                    "nombre": item.get("nom_estab"),
+                    "latitud": float(item.get("latitud", lat)),
+                    "longitud": float(item.get("longitud", lon)),
+                    "clave_actividad": item.get("codigo_act", codigos_scian[0])
+                })
+                
+    except Exception as e:
+        logger.error(f"Error al consultar la API del DENUE: {str(e)}")
+        # Si algo falla en la conexión, regresa lo que se haya alcanzado a acumular
+    
+    # 3. Regresamos la lista final con los comercios reales mapeados
+    return results
 
 
 def _mock_obtener_anclas(lat: float, lon: float, tipo: str) -> list[dict]:
     """
-    ⚠️  MOCK — Reemplazar con consultas reales a DENUE o Google Places API.
+      MOCK — Reemplazar con consultas reales a DENUE o Google Places API.
 
     `tipo` puede ser: 'banco', 'supermercado', 'metro', 'escuela', 'parque'
 
@@ -201,7 +214,7 @@ def _mock_obtener_anclas(lat: float, lon: float, tipo: str) -> list[dict]:
 
 def _mock_obtener_nse_zona(lat: float, lon: float) -> str:
     """
-    ⚠️  MOCK — Reemplazar con consulta a tu base de datos de AGEBs del INEGI
+      MOCK — Reemplazar con consulta a tu base de datos de AGEBs del INEGI
     o a un servicio de NSE geolocalizado (ej. AMAI, Nielsen, etc.).
 
     Returns:
@@ -213,7 +226,7 @@ def _mock_obtener_nse_zona(lat: float, lon: float) -> str:
 
 def _mock_obtener_accesibilidad(lat: float, lon: float) -> dict:
     """
-    ⚠️  MOCK — Reemplazar con datos de OpenStreetMap (Overpass API)
+      MOCK — Reemplazar con datos de OpenStreetMap (Overpass API)
     o tu propio catastro para detectar esquinas y sentido vial.
 
     Returns:
@@ -225,7 +238,7 @@ def _mock_obtener_accesibilidad(lat: float, lon: float) -> dict:
 
 def _mock_obtener_complementarios(lat: float, lon: float, giro: str) -> list[dict]:
     """
-    ⚠️  MOCK — Reemplazar con consulta DENUE filtrando los giros sinérgicos
+      MOCK — Reemplazar con consulta DENUE filtrando los giros sinérgicos
     definidos en CATALOGO_GIROS[giro]['anclas_sinergicas'].
     """
     logger.info(f"[MOCK] Buscando negocios complementarios para '{giro}'")
@@ -286,7 +299,7 @@ def _calcular_pilar_competencia(competidores: list[Negocio]) -> DesglosePilar:
     factores = []
 
     if not competidores:
-        factores.append("✅ Sin competidores directos en el radio de 500m.")
+        factores.append(" Sin competidores directos en el radio de 500m.")
         return DesglosePilar("Competencia", 30, puntaje, puntaje * 0.30, factores)
 
     for negocio in competidores:
@@ -303,13 +316,13 @@ def _calcular_pilar_competencia(competidores: list[Negocio]) -> DesglosePilar:
 
         puntaje -= resta
         factores.append(
-            f"⚠️  {negocio.nombre} a {d:.0f}m → impacto {nivel} (-{resta} pts)"
+            f"  {negocio.nombre} a {d:.0f}m → impacto {nivel} (-{resta} pts)"
         )
 
     if len(competidores) > 3:
         puntaje -= PENALIZACION_ALTA_DENSIDAD
         factores.append(
-            f"🔴 Alta densidad: {len(competidores)} competidores → penalización extra (-{PENALIZACION_ALTA_DENSIDAD} pts)"
+            f" Alta densidad: {len(competidores)} competidores → penalización extra (-{PENALIZACION_ALTA_DENSIDAD} pts)"
         )
 
     puntaje = max(0.0, puntaje)
@@ -336,18 +349,18 @@ def _calcular_pilar_anclas(
 
     for ancla in anclas_principales:
         puntaje += PUNTAJE_ANCLA_PRINCIPAL
-        factores.append(f"✅ Ancla principal: {ancla.nombre} (+{PUNTAJE_ANCLA_PRINCIPAL} pts)")
+        factores.append(f" Ancla principal: {ancla.nombre} (+{PUNTAJE_ANCLA_PRINCIPAL} pts)")
 
     for ancla in anclas_secundarias:
         puntaje += PUNTAJE_ANCLA_SECUNDARIA
-        factores.append(f"✅ Ancla secundaria: {ancla.nombre} (+{PUNTAJE_ANCLA_SECUNDARIA} pts)")
+        factores.append(f" Ancla secundaria: {ancla.nombre} (+{PUNTAJE_ANCLA_SECUNDARIA} pts)")
 
     for comp in complementarios:
         puntaje += 5
-        factores.append(f"🤝 Sinergia: {comp.nombre} (+5 pts)")
+        factores.append(f" Sinergia: {comp.nombre} (+5 pts)")
 
     if not factores:
-        factores.append("⚠️  Sin anclas ni negocios sinérgicos detectados en el radio.")
+        factores.append("  Sin anclas ni negocios sinérgicos detectados en el radio.")
 
     puntaje = min(100.0, puntaje)
     return DesglosePilar("Atracción / Anclas", 30, round(puntaje, 1), round(puntaje * 0.30, 2), factores)
@@ -363,12 +376,12 @@ def _calcular_pilar_nse(nse_zona: str, nse_target: str) -> DesglosePilar:
       - Si no es compatible → -10 pts
     """
     puntaje = 50.0
-    factores = [f"📍 NSE de la zona: {nse_zona} | Target del negocio: {nse_target}"]
+    factores = [f" NSE de la zona: {nse_zona} | Target del negocio: {nse_target}"]
 
     compatibles = COMPATIBILIDAD_NSE.get(nse_target, [])
     if nse_zona in compatibles:
         puntaje += 15
-        factores.append(f"✅ NSE compatible: el perfil de la zona coincide con tu cliente objetivo (+15 pts)")
+        factores.append(f" NSE compatible: el perfil de la zona coincide con tu cliente objetivo (+15 pts)")
     else:
         puntaje -= 10
         factores.append(
@@ -394,15 +407,15 @@ def _calcular_pilar_accesibilidad(en_esquina: bool, sentido_favorable: bool) -> 
 
     if en_esquina:
         puntaje += 20
-        factores.append("✅ Ubicación en esquina: mayor visibilidad y acceso peatonal (+20 pts)")
+        factores.append(" Ubicación en esquina: mayor visibilidad y acceso peatonal (+20 pts)")
     else:
-        factores.append("⚠️  No está en esquina: visibilidad estándar.")
+        factores.append("  No está en esquina: visibilidad estándar.")
 
     if sentido_favorable:
         puntaje += 20
-        factores.append("✅ Sentido vial favorable: acceso vehicular sencillo (+20 pts)")
+        factores.append(" Sentido vial favorable: acceso vehicular sencillo (+20 pts)")
     else:
-        factores.append("⚠️  Sentido vial no óptimo: acceso vehicular limitado.")
+        factores.append("  Sentido vial no óptimo: acceso vehicular limitado.")
 
     puntaje = min(100.0, puntaje)
     return DesglosePilar("Accesibilidad Vial", 15, round(puntaje, 1), round(puntaje * 0.15, 2), factores)
@@ -471,34 +484,34 @@ def _generar_recomendaciones(pilares: list[DesglosePilar], giro_info: dict) -> l
     p_competencia = pesos.get("Competencia")
     if p_competencia and p_competencia.puntaje_bruto < 60:
         recomendaciones.append(
-            "🏪 Alta competencia: diferénciate con especialización de producto, "
+            " Alta competencia: diferénciate con especialización de producto, "
             "precio o experiencia de cliente superior."
         )
 
     p_anclas = pesos.get("Atracción / Anclas")
     if p_anclas and p_anclas.puntaje_bruto < 30:
         recomendaciones.append(
-            "📍 Pocas anclas cercanas: evalúa estrategias de atracción propias "
+            " Pocas anclas cercanas: evalúa estrategias de atracción propias "
             "(rótulo visible, redes sociales locales, app de delivery)."
         )
 
     p_nse = pesos.get("Perfil NSE / Demográfico")
     if p_nse and p_nse.puntaje_bruto < 50:
         recomendaciones.append(
-            f"💰 Desalineación NSE: considera ajustar tu propuesta de valor o ticket promedio "
+            f" Desalineación NSE: considera ajustar tu propuesta de valor o ticket promedio "
             f"al perfil socioeconómico de la zona."
         )
 
     p_accesibilidad = pesos.get("Accesibilidad Vial")
     if p_accesibilidad and p_accesibilidad.puntaje_bruto < 70:
         recomendaciones.append(
-            "🚗 Accesibilidad limitada: prioriza señalización exterior y presencia "
+            " Accesibilidad limitada: prioriza señalización exterior y presencia "
             "en Google Maps / Waze para compensar visibilidad."
         )
 
     if not recomendaciones:
         recomendaciones.append(
-            "✅ La ubicación presenta condiciones favorables en todos los pilares. "
+            " La ubicación presenta condiciones favorables en todos los pilares. "
             "Asegura un plan de apertura sólido para aprovechar el potencial."
         )
 

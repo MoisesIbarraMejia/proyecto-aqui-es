@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import MapaPinDemo from './components/MapaPinDemo';
 import { 
   Compass, 
   MapPin, 
@@ -300,7 +301,7 @@ export default function App() {
                 onClick={() => setActiveMenu('simulator')}
                 className="bg-brand-primary hover:bg-brand-text text-white px-5 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all shadow-premium"
               >
-                PROBAR WORKBENCH
+                PROBAR GRATIS
               </button>
               <button 
                 onClick={() => setActiveMenu('api')}
@@ -337,12 +338,12 @@ export default function App() {
                   </div>
                   
                   <h1 className="text-4xl sm:text-6xl lg:text-7xl font-sans font-black text-brand-text leading-[0.95] mb-8 tracking-tight">
-                    El mapa es tu mejor <br />
-                    <span className="text-brand-primary bg-clip-text">activo financiero</span>
+                    Encuentra el mejor lugar <br />
+                    <span className="text-brand-primary bg-clip-text">para tu negocio</span>
                   </h1>
                   
                   <p className="text-lg md:text-xl text-brand-muted mb-10 leading-relaxed max-w-xl font-medium">
-                    Elimina la incertidumbre. Deja atrás las suposiciones y aprovecha el flujo geoterritorial en tiempo real con modelados automáticos adaptados para tu API.
+                    Analiza dónde hay más clientes potenciales y menos competencia antes de firmar un contrato. Datos reales del DENUE para comerciantes locales.
                   </p>
                   
                   <div className="flex flex-wrap gap-4 mb-16">
@@ -713,16 +714,14 @@ export default function App() {
               {/* Left Column: Interactive GIS Map Canvas Container */}
               <div className="lg:col-span-8 flex flex-col gap-6">
                 
-                {/* Simulated Map Canvas */}
-                <div className="bg-slate-950 border border-slate-900 rounded-[32px] h-[550px] relative overflow-hidden shadow-premium flex flex-col justify-between p-6">
+
+                {/* <div className="bg-slate-950 border border-slate-900 rounded-[32px] h-[550px] relative overflow-hidden shadow-premium flex flex-col justify-between p-6">
                   
-                  {/* Subtle Grid overlay representing map coordinates */}
                   <div className="absolute inset-0 opacity-10" style={{
                     backgroundImage: 'radial-gradient(#ffffff 1px, transparent 1px)',
                     backgroundSize: '24px 24px'
                   }}></div>
 
-                  {/* Simulated Abstract Map Layout Graphic Element */}
                   <div className="absolute inset-0 pointer-events-none flex items-center justify-center opacity-30 select-none">
                     <div className="w-[120%] h-[120%] border-2 border-slate-850/50 rounded-full flex items-center justify-center">
                       <div className="w-[80%] h-[80%] border-2 border-slate-800/30 rounded-full flex items-center justify-center">
@@ -731,7 +730,6 @@ export default function App() {
                     </div>
                   </div>
 
-                  {/* Map Controls Header overlay */}
                   <div className="relative z-10 flex flex-wrap justify-between items-center gap-3 bg-slate-900/90 backdrop-blur-md p-4 rounded-2xl border border-slate-800">
                     <div className="flex items-center gap-3">
                       <span className="text-[10px] font-mono text-zinc-500 font-extrabold uppercase tracking-widest">Capas Activas:</span>
@@ -762,7 +760,6 @@ export default function App() {
                     </div>
                   </div>
 
-                  {/* Scattered Live Points relative coordinates scaled on map */}
                   <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                     <div className="relative w-full h-full max-w-[450px] max-h-[350px]">
                       {dataset.map((loc, index) => {
@@ -794,12 +791,9 @@ export default function App() {
                             }}
                             onClick={() => setSelectedLocation(loc)}
                           >
-                            {/* Pulse rings */}
                             <div className="absolute inset-0 flex items-center justify-center">
                               <span className={`absolute w-12 h-12 rounded-full opacity-10 animate-ping ${metricColor}`}></span>
                             </div>
-
-                            {/* Center Dot */}
                             <div 
                               className={`rounded-full transition-transform border border-white flex items-center justify-center text-[8px] text-white font-extrabold ${metricColor} ${selectedLocation?.id === loc.id ? 'ring-4 ring-white' : ''}`}
                               style={{ 
@@ -810,7 +804,6 @@ export default function App() {
                               {metricVal}%
                             </div>
                             
-                            {/* Miniature label box */}
                             <div className="absolute -bottom-8 scale-0 group-hover:scale-100 transition-transform bg-zinc-900 border border-zinc-800 text-[9px] font-black text-white px-2 py-1 rounded shadow-xl whitespace-nowrap z-30">
                               {loc.name}
                             </div>
@@ -820,7 +813,6 @@ export default function App() {
                     </div>
                   </div>
 
-                  {/* Map Bottom Legend Pane overlay */}
                   <div className="relative z-10 bg-slate-900/90 backdrop-blur-md p-4 rounded-xl border border-slate-800 flex flex-wrap justify-between items-center gap-3">
                     <div className="flex gap-6 text-[10px] text-zinc-400">
                       <div className="flex items-center gap-2">
@@ -836,14 +828,14 @@ export default function App() {
                         <span>Coincidencia Target</span>
                       </div>
                     </div>
-                    {/* Switch Cities Tooltip */}
                     <div className="flex items-center gap-1.5 bg-zinc-950 px-2 py-1.5 rounded-lg text-[10px] font-bold text-zinc-400">
                       <Wifi className="w-3.5 h-3.5 text-brand-secondary" />
                       <span>{dataset.length} locales mapeados</span>
                     </div>
                   </div>
 
-                </div>
+                </div> */}
+                <MapaPinDemo />
 
                 {/* API JSON preview block if loaded from API */}
                 {dataSource === 'live-api' && (

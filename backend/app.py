@@ -1,12 +1,18 @@
 import os
+from flask import request
 from dotenv import load_dotenv
 from flask import Flask, jsonify
 import psycopg
 from shapely.geometry import Point
+from flask_cors import CORS
+import requests
 
 load_dotenv() # Carga el archivo .env automaticamente
 
 app = Flask(__name__)
+CORS(app) # Habilita CORS para todas las rutas
+
+DENUE_TOKEN = os.getenv("DENUE_TOKEN")
 
 # Configuración de tu conexión a PostgreSQL
 DB_CONFIG = (
@@ -21,6 +27,7 @@ DB_CONFIG = (
 def home():
     return jsonify({"mensaje":"Servidor Flask Geoespacial activo y listo!"})
 
+# Ruta de prueba para verificar que el análisis espacial y la conexión a la base de datos funcionan correctamente
 @app.route('/api/prueba-espacial')
 def prueba_espacial():
     try:
@@ -44,6 +51,80 @@ def prueba_espacial():
         
     except Exception as e:
         return jsonify({"status": "error", "detalle": str(e)}), 500
+
+# ── Endpoint 1: búsqueda DENUE para demo pública (sin auth) ──────────────
+@app.route('/api/denue/buscar')
+def buscar_denue():
+    """
+    Parámetros GET:
+      - lat, lon   : coordenadas del pin
+      - giro       : palabra clave (ej. "cafeteria", "farmacia")
+      - radio      : metros (default 500, max 500 en demo)
+    """
+    lat   = request.args.get('lat', type=float)
+    lon   = request.args.get('lon', type=float)
+    giro  = request.args.get('giro', 'comercio')
+    radio = min(int(request.args.get('radio', 500)), 500)  # cap demo en 500m
+
+    if not lat or not lon:
+        return jsonify({"error": "lat y lon son requeridos"}), 400
+
+    url = (
+        f"https://www.inegi.org.mx/app/api/denue/v1/consulta/"
+        f"Buscar/{giro}/{lat},{lon}/{radio}/{DENUE_TOKEN}/"
+    )
+    try:
+        resp = requests.get(url, timeout=10)
+        data = resp.json()
+        # Simplificar respuesta para el frontend
+        puntos = []
+        for item in (data if isinstance(data, list) else []):
+            puntos.append({
+                "id": item.get("id"),
+                "nombre": item.get("nom_estab"),
+                "actividad": item.get("nombre_act"),
+                "lat": float(item.get("latitud", 0)),
+                "lon": float(item.get("longitud", 0)),
+                "calle": item.get("nom_vial"),
+                "colonia": item.get("nom_col"),
+            })
+        return jsonify({"total": len(puntos), "negocios": puntos})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
+# ── Endpoint 2: score de viabilidad (servicio de pago) ───────────────────
+@app.route('/api/viabilidad/score')
+def score_viabilidad_endpoint():
+    """Requiere auth futura. Por ahora retorna análisis completo."""
+    from score_viabilidad import calcular_score_viabilidad
+    lat  = request.args.get('lat', type=float)
+    lon  = request.args.get('lon', type=float)
+    giro = request.args.get('giro', 'cafeteria')
+
+    if not lat or not lon:
+        return jsonify({"error": "lat y lon son requeridos"}), 400
+
+    resultado = calcular_score_viabilidad(lat, lon, giro)
+    return jsonify(resultado)
+
+
+# ── Endpoint 3: mapa de calor (servicio premium) ──────────────────────────
+@app.route('/api/viabilidad/mapa-calor')
+def mapa_calor_endpoint():
+    from mapa_calor_viabilidad import generar_mapa_calor
+    lat    = request.args.get('lat', type=float)
+    lon    = request.args.get('lon', type=float)
+    giro   = request.args.get('giro', 'cafeteria')
+    radio  = request.args.get('radio', 500, type=int)
+
+    resultado = generar_mapa_calor(
+        punto_central=(lat, lon),
+        radio_busqueda=radio,
+        giro_negocio=giro,
+        resolucion="baja"  # "media" cuando sea prod de pago
+    )
+    return jsonify(resultado)
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
