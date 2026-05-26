@@ -1,20 +1,22 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://ai.google.dev/static/site-assets/images/share-ais-513315318.png" />
-</div>
+# GeoAnalítica — Plataforma de Geomarketing
 
-# Run and deploy your AI Studio app
+## Stack
+- React 19 + TypeScript
+- Vite 6
+- Tailwind CSS 4
+- MapLibre GL (mapas)
+- Flask + PostGIS (backend)
 
-This contains everything you need to run your app locally.
+## Levantar en local
 
-View your app in AI Studio: https://ai.studio/apps/590a651b-ae34-4929-8800-6ebd13562d2e
+```bash
+# Frontend
+cd frontend
+npm install
+npm run dev
 
-## Run Locally
-
-**Prerequisites:**  Node.js
-
-
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+# Backend
+cd backend
+pip install -r requirements.txt
+python app.py
+```
