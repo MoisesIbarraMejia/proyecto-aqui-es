@@ -76,18 +76,34 @@ def buscar_denue():
     try:
         resp = requests.get(url, timeout=10)
         data = resp.json()
-        # Simplificar respuesta para el frontend
+        
         puntos = []
         for item in (data if isinstance(data, list) else []):
             puntos.append({
-                "id": item.get("id"),
-                "nombre": item.get("nom_estab"),
-                "actividad": item.get("nombre_act"),
-                "lat": float(item.get("latitud", 0)),
-                "lon": float(item.get("longitud", 0)),
-                "calle": item.get("nom_vial"),
-                "colonia": item.get("nom_col"),
+                "clee": item.get("CLEE"),
+                "id": item.get("Id"),
+                "nombre": item.get("Nombre"),
+                "razon_social": item.get("Razon_social"),
+                "clase_actividad": item.get("Clase_actividad"),
+                "estrato": item.get("Estrato"),
+                "tipo_vialidad": item.get("Tipo_vialidad"),
+                "calle": item.get("Calle"),
+                "num_exterior": item.get("Num_Exterior"),
+                "num_interior": item.get("Num_Interior"),
+                "colonia": item.get("Colonia"),
+                "cp": item.get("CP"),
+                "ubicacion": item.get("Ubicacion"),
+                "telefono": item.get("Telefono"),
+                "correo_e": item.get("Correo_e"),
+                "sitio_internet": item.get("Sitio_internet"),
+                "tipo": item.get("Tipo"),
+                "lon": float(item.get("Longitud", 0)) if item.get("Longitud") else 0.0,
+                "lat": float(item.get("Latitud", 0)) if item.get("Latitud") else 0.0,
+                "centro_comercial": item.get("CentroComercial"),
+                "tipo_centro_comercial": item.get("TipoCentroComercial"),
+                "num_local": item.get("NumLocal")
             })
+            
         return jsonify({"total": len(puntos), "negocios": puntos})
     except Exception as e:
         return jsonify({"error": str(e)}), 500

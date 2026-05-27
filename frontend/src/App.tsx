@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import MapaPinDemo from './components/MapaPinDemo';
+import MapaPinDemo from './components/MapaPinDemo.tsx';
+import MapaHeroEstatico from './components/MapaHeroEstatico.tsx';
 import { 
   Compass, 
   MapPin, 
@@ -379,80 +380,7 @@ export default function App() {
                 
                 {/* Visual Premium Mockup on Right */}
                 <div className="lg:col-span-6 relative h-[520px] md:h-[580px]">
-                  <div className="absolute inset-0 border border-brand-border rounded-[40px] bg-brand-accent/40 glass overflow-hidden shadow-premium">
-                    
-                    {/* Simulated Map Grid */}
-                    <div className="absolute inset-0 bg-slate-900 border border-slate-950 overflow-hidden mix-blend-multiply opacity-10"></div>
-                    
-                    <img 
-                      src="https://images.unsplash.com/photo-1543286386-713bdd548da4?q=80&w=2070&auto=format&fit=crop" 
-                      alt="Advanced GIS Visualization"
-                      className="w-full h-full object-cover mix-blend-multiply opacity-15 grayscale contrast-125"
-                      referrerPolicy="no-referrer"
-                    />
-                    
-                    {/* Dynamic Map Pulsing nodes */}
-                    <div className="absolute inset-0">
-                      <div className="absolute top-[35%] left-[45%] w-32 h-32">
-                        <div className="absolute inset-0 bg-brand-primary/20 rounded-full animate-ping"></div>
-                        <div className="absolute inset-[30%] bg-brand-primary rounded-full opacity-60"></div>
-                        <div className="absolute inset-[44%] bg-white rounded-full"></div>
-                      </div>
-
-                      <div className="absolute top-[65%] left-[25%] w-20 h-20">
-                        <div className="absolute inset-0 bg-brand-secondary/20 rounded-full animate-ping" style={{ animationDelay: '1s' }}></div>
-                        <div className="absolute inset-[35%] bg-brand-secondary rounded-full opacity-60"></div>
-                      </div>
-
-                      <div className="absolute top-[20%] left-[75%] w-16 h-16">
-                        <div className="absolute inset-0 bg-brand-primary/10 rounded-full animate-ping" style={{ animationDelay: '2s' }}></div>
-                        <div className="absolute inset-[35%] bg-brand-primary rounded-full opacity-60"></div>
-                      </div>
-                    </div>
-
-                    {/* Floating Premium Card */}
-                    <div className="absolute top-8 right-8 left-8 sm:left-auto sm:w-80 glass p-6 rounded-3xl shadow-premium border-white/50 animate-float">
-                      <div className="flex items-center justify-between mb-4">
-                        <div className="flex items-center gap-2">
-                          <Activity className="w-4 h-4 text-brand-primary animate-pulse" />
-                          <p className="text-[10px] font-black text-brand-text uppercase tracking-widest">Nodos de Monitoreo</p>
-                        </div>
-                        <span className="text-[9px] bg-brand-primary/10 text-brand-primary px-2 py-0.5 rounded-full font-bold uppercase tracking-wider">Activo</span>
-                      </div>
-                      
-                      <div className="space-y-4">
-                        <div className="p-3 bg-white/70 rounded-xl border border-brand-border">
-                          <p className="text-[9px] text-brand-muted uppercase font-black">Localización Óptima Detectada</p>
-                          <p className="text-sm font-extrabold text-brand-text mt-1">Gran Vía, Madrid Central</p>
-                          <div className="flex items-center justify-between text-[11px] mt-2 text-brand-muted">
-                            <span className="flex items-center gap-1"><TrendingUp className="w-3 h-3 text-brand-primary" /> 94% Tráfico</span>
-                            <span className="font-extrabold text-[#0088cc]">$420K Proy.</span>
-                          </div>
-                        </div>
-
-                        <div className="flex justify-between items-center bg-white/50 p-2 rounded-xl text-[10px] font-bold text-brand-muted">
-                          <span>API FEED STATUS:</span>
-                          <span className="flex items-center gap-1.5 font-black text-brand-primary text-[9px] tracking-wider">
-                            <span className="w-1.5 h-1.5 bg-brand-primary rounded-full animate-ping"></span>
-                            CONEXIÓN LISTA
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Floating Bottom Left Card */}
-                    <div className="absolute bottom-8 left-8 bg-zinc-950 text-white p-5 rounded-2xl shadow-xl border border-zinc-800">
-                      <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-lg bg-zinc-800 flex items-center justify-center text-brand-secondary">
-                          <Terminal className="w-4 h-4" />
-                        </div>
-                        <div>
-                          <p className="text-[8px] tracking-widest text-zinc-400 font-bold uppercase">Consola de Desarrollo</p>
-                          <p className="text-xs font-mono text-emerald-400 font-bold mt-0.5">schema_loaded_ok: 200</p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                  <MapaHeroEstatico />
                 </div>
               </div>
             </section>
