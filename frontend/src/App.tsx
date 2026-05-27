@@ -618,7 +618,7 @@ export default function App() {
                   <Cpu className="w-5 h-5 text-brand-primary" />
                   <span className="text-xs font-black uppercase tracking-widest">Workbench Integrado</span>
                 </div>
-                <h2 className="text-4xl font-extrabold text-brand-text tracking-tight mt-2">Simulador de Inteligencia Geoespacial</h2>
+                <h2 className="text-4xl font-extrabold text-brand-text tracking-tight mt-2">Explora los negocios cercanos a tu area de analisis</h2>
                 <p className="text-brand-muted mt-2 text-sm max-w-2xl">
                   Explora analíticas territoriales. Elige una de nuestras ciudades demo o conecta tu propia pasarela API externa para visualizar tus coordenadas y data points en vivo.
                 </p>
