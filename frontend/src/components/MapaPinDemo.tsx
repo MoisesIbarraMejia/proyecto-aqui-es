@@ -130,7 +130,7 @@ export default function MapaPinDemo() {
       } catch (e: any) {
         setError(
           e.message.includes('fetch')
-            ? 'No se pudo conectar al servidor. Verifica que el backend esté activo en localhost:5000'
+            ? 'No se pudo conectar con el servicio de base de datos territorial. Por favor, asegúrate de que el servidor de datos esté en funcionamiento o inténtalo más tarde.'
             : e.message
         );
       } finally {

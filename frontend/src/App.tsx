@@ -9,26 +9,16 @@ import {
   Navigation, 
   ShieldCheck, 
   CheckCheck, 
-  Clock, 
   ChevronRight, 
   Globe, 
-  Cpu, 
-  Database, 
-  Terminal, 
-  Shuffle, 
-  Send, 
-  Code, 
-  Download, 
   Search, 
   FileText, 
   AlertCircle, 
   RefreshCw, 
   Wifi, 
-  ArrowRight,
   TrendingUp,
   Sliders,
-  DollarSign,
-  HelpCircle
+  DollarSign
 } from 'lucide-react';
 
 // ==========================================
@@ -93,10 +83,10 @@ export default function App() {
   // Navigation active tab
   const [activeMenu, setActiveMenu] = useState<'home' | 'simulator' | 'api' | 'setup'>('home');
   
-  // API State
-  const [apiUrl, setApiUrl] = useState<string>('https://api.geoanalitica.io/v1/locations');
-  const [apiHeaderName, setApiHeaderName] = useState<string>('Authorization');
-  const [apiHeaderVal, setApiHeaderVal] = useState<string>('Bearer geo_client_live_7x829a');
+  // Carga de datos personalizados
+  const [apiUrl, setApiUrl] = useState<string>('https://datos.geoanalitica.io/ejemplo_locales_candidatos.json');
+  const [apiHeaderName, setApiHeaderName] = useState<string>('');
+  const [apiHeaderVal, setApiHeaderVal] = useState<string>('');
   const [isApiLoading, setIsApiLoading] = useState<boolean>(false);
   const [apiError, setApiError] = useState<string | null>(null);
   
@@ -199,14 +189,14 @@ export default function App() {
 
       setDataset(santized);
       setDataSource("live-api");
-      setCurrentCityName("API Direct Feed");
+      setCurrentCityName("Archivo de Datos");
       
     } catch (err: any) {
       console.error(err);
       if (err.name === 'AbortError') {
-        setApiError("La conexión superó el tiempo límite de 5 segundos. Puedes usar el simulador local para pruebas.");
+        setApiError("La carga superó el tiempo límite de 5 segundos. Puedes usar la simulación comercial para pruebas.");
       } else {
-        setApiError(err.message || "Error al conectar con la API. Asegúrate de habilitar CORS y que la URL sea válida.");
+        setApiError("Error al cargar el archivo de datos. Por favor, asegúrate de que el enlace sea válido y el archivo esté en formato de coordenadas públicas.");
       }
       setDataSource("local-simulated");
     } finally {
@@ -262,9 +252,6 @@ export default function App() {
             <span className="font-sans font-extrabold text-2xl uppercase tracking-tight">
               Geo<span className="text-brand-primary italic">Analítica</span>
             </span>
-            <span className="text-[9px] border border-brand-primary/30 px-2 py-0.5 rounded-full font-black text-brand-primary uppercase tracking-wider hidden sm:inline">
-              PRO v4.0
-            </span>
           </div>
 
           {/* Nav items */}
@@ -274,25 +261,25 @@ export default function App() {
                 onClick={() => setActiveMenu('home')} 
                 className={`transition-colors py-2 hover:text-brand-primary ${activeMenu === 'home' ? 'text-brand-primary border-b-2 border-brand-primary' : ''}`}
               >
-                Servicios
+                Inicio
               </button>
               <button 
                 onClick={() => setActiveMenu('simulator')} 
                 className={`transition-colors py-2 hover:text-brand-primary ${activeMenu === 'simulator' ? 'text-brand-primary border-b-2 border-brand-primary' : ''}`}
               >
-                Simulador SIG
+                Simulador de Ubicación
               </button>
               <button 
                 onClick={() => setActiveMenu('api')} 
                 className={`transition-colors py-2 hover:text-brand-primary ${activeMenu === 'api' ? 'text-brand-primary border-b-2 border-brand-primary' : ''}`}
               >
-                Integrar API
+                Estudios de Viabilidad
               </button>
               <button 
                 onClick={() => setActiveMenu('setup')} 
                 className={`transition-colors py-2 hover:text-brand-primary ${activeMenu === 'setup' ? 'text-brand-primary border-b-2 border-brand-primary' : ''}`}
               >
-                Instalación Local
+                Guías de Expansión
               </button>
             </div>
 
@@ -302,13 +289,13 @@ export default function App() {
                 onClick={() => setActiveMenu('simulator')}
                 className="bg-brand-primary hover:bg-brand-text text-white px-5 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all shadow-premium"
               >
-                PROBAR GRATIS
+                Explorar Zonas
               </button>
               <button 
                 onClick={() => setActiveMenu('api')}
                 className="bg-zinc-100 hover:bg-brand-primary/10 text-brand-text border border-brand-border px-4 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all hidden sm:inline"
               >
-                CONECTAR API
+                Analizar Ubicación
               </button>
             </div>
           </div>
@@ -335,16 +322,16 @@ export default function App() {
                   {/* Badge */}
                   <div className="inline-flex items-center gap-3 px-4 py-1.5 bg-brand-primary/5 border border-brand-primary/10 rounded-full mb-8">
                     <div className="w-1.5 h-1.5 bg-brand-primary rounded-full animate-pulse"></div>
-                    <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-brand-primary">TECNOLOGÍA GIS EMPRESARIAL</span>
+                    <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-brand-primary">INTELIGENCIA TERRITORIAL Y GEOMARKETING</span>
                   </div>
                   
                   <h1 className="text-4xl sm:text-6xl lg:text-7xl font-sans font-black text-brand-text leading-[0.95] mb-8 tracking-tight">
-                    Encuentra el mejor lugar <br />
-                    <span className="text-brand-primary bg-clip-text">para tu negocio</span>
+                    Encuentra la mejor <br />
+                    <span className="text-brand-primary bg-clip-text">ubicación para tu negocio</span>
                   </h1>
                   
                   <p className="text-lg md:text-xl text-brand-muted mb-10 leading-relaxed max-w-xl font-medium">
-                    Analiza dónde hay más clientes potenciales y menos competencia antes de firmar un contrato. Datos reales del DENUE para comerciantes locales.
+                    Analizamos información espacial, movilidad y características territoriales para ayudarte a elegir la zona ideal.
                   </p>
                   
                   <div className="flex flex-wrap gap-4 mb-16">
@@ -352,28 +339,28 @@ export default function App() {
                       onClick={() => setActiveMenu('simulator')}
                       className="bg-brand-text text-white px-8 py-4.5 rounded-2xl font-black uppercase text-xs tracking-widest hover:bg-brand-primary transition-all shadow-premium flex items-center gap-3"
                     >
-                      EXPLORAR SIMULADOR <ChevronRight className="w-4 h-4 text-brand-secondary" />
+                      Explorar zonas <ChevronRight className="w-4 h-4 text-brand-secondary" />
                     </button>
                     <button 
                       onClick={() => setActiveMenu('api')}
                       className="bg-white border border-brand-border text-brand-text hover:bg-brand-accent/30 px-8 py-4.5 rounded-2xl font-black uppercase text-xs tracking-widest transition-all"
                     >
-                      Configurar Conector API
+                      Analizar ubicación
                     </button>
                   </div>
 
                   <div className="grid grid-cols-3 gap-6 border-t border-brand-border pt-8 max-w-md">
                     <div>
                       <div className="text-3xl font-black text-brand-text tracking-tight">98.4%</div>
-                      <div className="text-[9px] uppercase tracking-[0.2em] text-brand-muted font-black mt-1">Precisión de Proyección</div>
+                      <div className="text-[9px] uppercase tracking-[0.2em] text-brand-muted font-black mt-1">Precisión Comercial</div>
                     </div>
                     <div>
                       <div className="text-3xl font-black text-brand-text tracking-tight">3.2M+</div>
-                      <div className="text-[9px] uppercase tracking-[0.2em] text-brand-muted font-black mt-1">Nodos Censales</div>
+                      <div className="text-[9px] uppercase tracking-[0.2em] text-brand-muted font-black mt-1">Comercios Mapeados</div>
                     </div>
                     <div>
-                      <div className="text-3xl font-black text-brand-text tracking-tight">Real-Time</div>
-                      <div className="text-[9px] uppercase tracking-[0.2em] text-brand-muted font-black mt-1">Integración de API</div>
+                      <div className="text-3xl font-black text-brand-text tracking-tight">INEGI</div>
+                      <div className="text-[9px] uppercase tracking-[0.2em] text-brand-muted font-black mt-1">Datos Oficiales DENUE</div>
                     </div>
                   </div>
                 </div>
@@ -405,12 +392,12 @@ export default function App() {
               <div className="max-w-7xl mx-auto">
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
                   <div className="lg:col-span-5">
-                    <span className="text-[11px] font-black text-brand-primary uppercase tracking-[0.3em]">SEGURIDAD EN INVERSIÓN</span>
+                    <span className="text-[11px] font-black text-brand-primary uppercase tracking-[0.3em]">DECISIONES CON CERTEZA CIENTÍFICA</span>
                     <h2 className="text-3xl sm:text-5xl font-black text-brand-text leading-tight mt-4 mb-6">
-                      ¿Por qué comprar una solución automatizada?
+                      ¿Por qué es clave el análisis territorial?
                     </h2>
                     <p className="text-brand-muted leading-relaxed mb-8">
-                      El 82% de las aperturas de negocios fracasan debido a un análisis territorial deficiente. GeoAnalítica Pro mapea científicamente las dinámicas de movilidad urbana y densidad comercial para garantizar un retorno predictivo de tu inversión.
+                      Más del 80% de los negocios locales fracasan en sus primeros dos años debido a una mala ubicación. GeoAnalítica mapea científicamente la movilidad urbana, la densidad de competidores y el perfil demográfico para asegurar el éxito de tu inversión.
                     </p>
 
                     <div className="space-y-6">
@@ -419,8 +406,8 @@ export default function App() {
                           <CheckCheck className="w-5 h-5" />
                         </div>
                         <div>
-                          <h4 className="font-extrabold text-brand-text mb-1">Certeza de Tráfico Peatonal</h4>
-                          <p className="text-sm text-brand-muted">Análisis verificado de flujos reales de peatones por hora en cada calle.</p>
+                          <h4 className="font-extrabold text-brand-text mb-1">Flujo y Movilidad Peatonal</h4>
+                          <p className="text-sm text-brand-muted">Análisis verificado de afluencia peatonal y accesibilidad en cada tramo de calle.</p>
                         </div>
                       </div>
 
@@ -429,8 +416,8 @@ export default function App() {
                           <CheckCheck className="w-5 h-5" />
                         </div>
                         <div>
-                          <h4 className="font-extrabold text-brand-text mb-1">Evita Canibalización de Sucursales</h4>
-                          <p className="text-sm text-brand-muted">Mapeo de zonas de fricción para evitar que tus nuevos locales resten clientes a los actuales.</p>
+                          <h4 className="font-extrabold text-brand-text mb-1">Estudio de Competencia Real</h4>
+                          <p className="text-sm text-brand-muted">Mapeo del tamaño de negocios competidores para evitar la saturación comercial de la zona.</p>
                         </div>
                       </div>
 
@@ -439,8 +426,8 @@ export default function App() {
                           <CheckCheck className="w-5 h-5" />
                         </div>
                         <div>
-                          <h4 className="font-extrabold text-brand-text mb-1">API-First: Listo para Conectar</h4>
-                          <p className="text-sm text-brand-muted">Diseñado con adaptores genéricos para absorber cualquier JSON de coordenadas que le envíes.</p>
+                          <h4 className="font-extrabold text-brand-text mb-1">Perfil Sociodemográfico</h4>
+                          <p className="text-sm text-brand-muted">Información detallada sobre nivel de ingresos, edad y hábitos de consumo del vecindario.</p>
                         </div>
                       </div>
                     </div>
@@ -452,39 +439,39 @@ export default function App() {
                       <div className="w-12 h-12 rounded-xl bg-brand-accent flex items-center justify-center text-brand-primary mb-6 group-hover:bg-brand-primary group-hover:text-white transition-colors">
                         <MapPin className="w-6 h-6" />
                       </div>
-                      <h3 className="font-extrabold text-xl text-brand-text mb-3">Modelado de Ubicación</h3>
+                      <h3 className="font-extrabold text-xl text-brand-text mb-3">Análisis de Ubicación</h3>
                       <p className="text-sm text-brand-muted leading-relaxed">
-                        Evaluación automatizada de locaciones comerciales considerando coeficientes de visibilidad y cercanía con competidores.
-                      </p>
-                    </div>
-
-                    <div className="bg-white p-8 rounded-[32px] border border-brand-border hover:shadow-premium transition-shadow group">
-                      <div className="w-12 h-12 rounded-xl bg-brand-accent flex items-center justify-center text-[#0088cc] mb-6 group-hover:bg-[#0088cc] group-hover:text-white transition-colors">
-                        <Layers className="w-6 h-6" />
-                      </div>
-                      <h3 className="font-extrabold text-xl text-brand-text mb-3">Capas de Datos</h3>
-                      <p className="text-sm text-brand-muted leading-relaxed">
-                        Informes con datos integrados de densidad de población urbana, ingresos promedio, flujo circundante y saturación comercial.
+                        Evaluación comercial integral de locales considerando factores de visibilidad, accesos y compatibilidad con el entorno urbano.
                       </p>
                     </div>
 
                     <div className="bg-white p-8 rounded-[32px] border border-brand-border hover:shadow-premium transition-shadow group">
                       <div className="w-12 h-12 rounded-xl bg-brand-accent flex items-center justify-center text-brand-primary mb-6 group-hover:bg-brand-primary group-hover:text-white transition-colors">
-                        <Shuffle className="w-6 h-6" />
+                        <Layers className="w-6 h-6" />
                       </div>
-                      <h3 className="font-extrabold text-xl text-brand-text mb-3">Conector Multipropósito</h3>
+                      <h3 className="font-extrabold text-xl text-brand-text mb-3">Estudios Demográficos</h3>
                       <p className="text-sm text-brand-muted leading-relaxed">
-                        Entorno preparado para leer el catálogo de locales, tiendas, depósitos y oficinas de tus propias bases de datos.
+                        Acceso a datos cruzados de población local y flotante, distribución de edades y capacidad de compra promedio por manzana.
                       </p>
                     </div>
 
                     <div className="bg-white p-8 rounded-[32px] border border-brand-border hover:shadow-premium transition-shadow group">
-                      <div className="w-12 h-12 rounded-xl bg-brand-accent flex items-center justify-center text-brand-text mb-6 group-hover:bg-brand-text group-hover:text-white transition-colors">
-                        <Sliders className="w-6 h-6" />
+                      <div className="w-12 h-12 rounded-xl bg-brand-accent flex items-center justify-center text-brand-primary mb-6 group-hover:bg-brand-primary group-hover:text-white transition-colors">
+                        <Navigation className="w-6 h-6" />
                       </div>
-                      <h3 className="font-extrabold text-xl text-brand-text mb-3">Fácil de Modificar</h3>
+                      <h3 className="font-extrabold text-xl text-brand-text mb-3">Movilidad y Conectividad</h3>
                       <p className="text-sm text-brand-muted leading-relaxed">
-                        Código limpio construido en React, modular e intuitivo para que añadas tus propios mapas o endpoints favoritos.
+                        Visualización de flujos peatonales, cercanía al transporte público y conectividad vial para entender la accesibilidad.
+                      </p>
+                    </div>
+
+                    <div className="bg-white p-8 rounded-[32px] border border-brand-border hover:shadow-premium transition-shadow group">
+                      <div className="w-12 h-12 rounded-xl bg-brand-accent flex items-center justify-center text-brand-primary mb-6 group-hover:bg-brand-primary group-hover:text-white transition-colors">
+                        <TrendingUp className="w-6 h-6" />
+                      </div>
+                      <h3 className="font-extrabold text-xl text-brand-text mb-3">Potencial Comercial</h3>
+                      <p className="text-sm text-brand-muted leading-relaxed">
+                        Modelado geoespacial predictivo para estimar la viabilidad y demanda del giro de tu negocio en la zona elegida.
                       </p>
                     </div>
                   </div>
@@ -588,7 +575,7 @@ export default function App() {
                       <label className="text-[10px] font-black uppercase tracking-wider text-brand-text">Mensaje o Pregunta Espacial</label>
                       <textarea 
                         rows={3}
-                        placeholder="Menciona las ciudades de interés o las dudas sobre cómo conectar tu API" 
+                        placeholder="Menciona las ciudades de tu interés o tus dudas sobre los reportes geoespaciales" 
                         className="w-full bg-slate-50 border border-brand-border rounded-xl p-3.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-primary"
                         value={auditoriaForm.mensaje}
                         onChange={e => setAuditoriaForm({...auditoriaForm, mensaje: e.target.value})}
@@ -615,12 +602,12 @@ export default function App() {
             <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end gap-6 mb-10 pb-8 border-b border-brand-border">
               <div>
                 <div className="flex items-center gap-2 text-brand-primary">
-                  <Cpu className="w-5 h-5 text-brand-primary" />
-                  <span className="text-xs font-black uppercase tracking-widest">Workbench Integrado</span>
+                  <Compass className="w-5 h-5 text-brand-primary" />
+                  <span className="text-xs font-black uppercase tracking-widest">Panel de Control Territorial</span>
                 </div>
-                <h2 className="text-4xl font-extrabold text-brand-text tracking-tight mt-2">Explora los negocios cercanos a tu area de analisis</h2>
+                <h2 className="text-4xl font-extrabold text-brand-text tracking-tight mt-2">Explora los negocios cercanos a tu área de análisis</h2>
                 <p className="text-brand-muted mt-2 text-sm max-w-2xl">
-                  Explora analíticas territoriales. Elige una de nuestras ciudades demo o conecta tu propia pasarela API externa para visualizar tus coordenadas y data points en vivo.
+                  Explora analíticas territoriales. Elige una de nuestras ciudades demo o carga tu propio archivo de coordenadas para visualizar tus locales candidatos en vivo.
                 </p>
               </div>
 
@@ -628,9 +615,9 @@ export default function App() {
               <div className="flex items-center gap-3 bg-white border border-brand-border p-3.5 rounded-2xl shadow-sm">
                 <span className={`w-3 h-3 rounded-full ${dataSource === 'live-api' ? 'bg-emerald-500 animate-pulse' : 'bg-brand-primary animate-pulse'}`}></span>
                 <div>
-                  <p className="text-[9px] font-black uppercase text-brand-muted tracking-wider">Modo de Datos Activo</p>
+                  <p className="text-[9px] font-black uppercase text-brand-muted tracking-wider">Origen de la Información</p>
                   <p className="text-xs font-extrabold text-brand-text">
-                    {dataSource === 'live-api' ? 'FEED API DE COORDENADAS' : `SIMULADOR LOCAL: "${currentCityName}"`}
+                    {dataSource === 'live-api' ? 'DATOS DE CLIENTE CARGADOS' : `SIMULACIÓN COMERCIAL: "${currentCityName}"`}
                   </p>
                 </div>
               </div>
@@ -765,18 +752,39 @@ export default function App() {
                 </div> */}
                 <MapaPinDemo />
 
-                {/* API JSON preview block if loaded from API */}
+                {/* Visual statistics card for custom data loaded from API */}
                 {dataSource === 'live-api' && (
-                  <div className="bg-slate-900 border border-zinc-800 p-6 rounded-3xl text-white font-mono text-xs">
-                    <div className="flex justify-between items-center mb-3">
-                      <span className="text-[10px] tracking-wider text-slate-400 font-extrabold uppercase flex items-center gap-2">
-                        <Terminal className="w-4 h-4 text-emerald-400" /> API RAW FEED DATA (INTEGRACIÓN ACTIVA)
+                  <div className="bg-white border border-brand-border p-6 rounded-[32px] shadow-premium">
+                    <div className="flex justify-between items-center border-b border-brand-border pb-3 mb-4">
+                      <span className="text-[10px] font-black text-brand-primary uppercase tracking-wider flex items-center gap-2">
+                        <CheckCheck className="w-4 h-4 text-brand-green" /> locales candidatos cargados con éxito
                       </span>
-                      <span className="text-[9px] bg-emerald-950 text-emerald-400 px-2.5 py-0.5 rounded font-black uppercase">Exitoso</span>
+                      <span className="text-[9px] bg-emerald-50 text-brand-green border border-brand-green/20 px-2.5 py-0.5 rounded-full font-black uppercase">Activo</span>
                     </div>
-                    <pre className="max-h-28 overflow-y-auto bg-black/60 p-4 rounded-xl custom-scrollbar border border-zinc-900 text-zinc-300">
-                      {apiResponseFull ? JSON.stringify(apiResponseFull, null, 2) : '// No se ha recibido respuesta cruda.'}
-                    </pre>
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 text-brand-text">
+                      <div>
+                        <p className="text-[9px] text-brand-muted uppercase font-black tracking-wider">Total Locales</p>
+                        <p className="text-xl font-extrabold text-brand-text mt-1">{dataset.length} puntos</p>
+                      </div>
+                      <div>
+                        <p className="text-[9px] text-brand-muted uppercase font-black tracking-wider">Promedio de Tráfico</p>
+                        <p className="text-xl font-extrabold text-brand-text mt-1">
+                          {dataset.length > 0 ? Math.round(dataset.reduce((sum, item) => sum + item.trafficIndex, 0) / dataset.length) : 0}%
+                        </p>
+                      </div>
+                      <div>
+                        <p className="text-[9px] text-brand-muted uppercase font-black tracking-wider">Saturación Promedio</p>
+                        <p className="text-xl font-extrabold text-brand-text mt-1">
+                          {dataset.length > 0 ? Math.round(dataset.reduce((sum, item) => sum + item.competitionDensity, 0) / dataset.length) : 0}%
+                        </p>
+                      </div>
+                      <div>
+                        <p className="text-[9px] text-brand-muted uppercase font-black tracking-wider">Origen de Datos</p>
+                        <p className="text-xl font-extrabold text-brand-primary mt-1 truncate" title={apiUrl}>
+                          Personalizado
+                        </p>
+                      </div>
+                    </div>
                   </div>
                 )}
               </div>
@@ -786,10 +794,10 @@ export default function App() {
 
                 {/* Switch Data source dropdown selector */}
                 <div className="bg-white border border-brand-border p-6 rounded-[32px] shadow-sm">
-                  <h4 className="text-[10px] font-black text-brand-primary uppercase tracking-[0.2em] mb-4">Seleccionar Coordenadas</h4>
+                  <h4 className="text-[10px] font-black text-brand-primary uppercase tracking-[0.2em] mb-4">Zona de Análisis</h4>
                   
                   <div className="space-y-3">
-                    <label className="text-[11px] font-bold text-brand-muted uppercase block">Área Geográfica Local:</label>
+                    <label className="text-[11px] font-bold text-brand-muted uppercase block">Seleccionar Ciudad:</label>
                     <div className="grid grid-cols-2 gap-2">
                       {Object.keys(MOCK_CITIES).map((city) => (
                         <button
@@ -803,12 +811,12 @@ export default function App() {
                     </div>
 
                     <div className="pt-3 border-t border-brand-border mt-3 flex justify-between items-center">
-                      <span className="text-[9px] text-brand-muted uppercase font-black">¿Usar tu propio backend?</span>
+                      <span className="text-[9px] text-brand-muted uppercase font-black">¿Analizar tus propios locales?</span>
                       <button 
                         onClick={() => setActiveMenu('api')}
                         className="text-[9px] bg-brand-accent hover:bg-brand-primary hover:text-white transition-all text-brand-primary font-black px-2.5 py-1.5 rounded-lg flex items-center gap-1 uppercase"
                       >
-                        <Sliders className="w-3 h-3" /> SET API URL
+                        <Sliders className="w-3 h-3" /> Cargar locales
                       </button>
                     </div>
                   </div>
@@ -881,7 +889,7 @@ export default function App() {
                         onClick={() => setActiveMenu('api')}
                         className="w-full mt-4 bg-zinc-900 border border-zinc-950 text-white font-extrabold text-[10px] uppercase tracking-widest py-3.5 rounded-xl transition-all hover:bg-brand-primary shadow-sm flex items-center justify-center gap-2"
                       >
-                        <Database className="w-4 h-4" /> Alimentar API de {selectedLocation.category}
+                        <FileText className="w-4 h-4" /> Ver viabilidad de {selectedLocation.category}
                       </button>
 
                     </div>
@@ -905,10 +913,10 @@ export default function App() {
             {/* Header of section */}
             <div className="mb-12 pb-8 border-b border-brand-border flex items-center justify-between flex-wrap gap-4">
               <div>
-                <span className="text-[11px] font-black text-brand-primary uppercase tracking-[0.3em]">INTEGRACIÓN DE BACKEND</span>
-                <h2 className="text-4xl font-extrabold text-brand-text tracking-tight mt-2">Prueba y Conectores de tu API en Vivo</h2>
+                <span className="text-[11px] font-black text-brand-primary uppercase tracking-[0.3em]">ESTUDIO DE EXPANSIÓN COMERCIAL</span>
+                <h2 className="text-4xl font-extrabold text-brand-text tracking-tight mt-2">Estudio de Viabilidad y Carga de Locales Candidatos</h2>
                 <p className="text-brand-muted text-sm mt-2 max-w-2xl">
-                  Configura tu endpoint HTTP para que nuestro simulador capture los datos directamente de tu sistema local o en la nube.
+                  Carga tus propios conjuntos de datos territoriales, locales candidatos o zonas de interés en el mapa interactivo para evaluar su viabilidad comercial.
                 </p>
               </div>
 
@@ -917,7 +925,7 @@ export default function App() {
                 onClick={() => setActiveMenu('simulator')}
                 className="bg-brand-primary text-white hover:bg-brand-text transition-colors px-6 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest text-center"
               >
-                Volver al Map Workbench
+                Volver al Simulador
               </button>
             </div>
 
@@ -928,49 +936,49 @@ export default function App() {
                 
                 <div className="bg-white border border-brand-border p-8 rounded-[32px] shadow-sm">
                   <div className="flex items-center gap-3 mb-6">
-                    <div className="w-8 h-8 rounded-lg bg-emerald-500/10 flex items-center justify-center text-emerald-600">
+                    <div className="w-8 h-8 rounded-lg bg-emerald-500/10 flex items-center justify-center text-brand-green">
                       <Wifi className="w-5 h-5" />
                     </div>
                     <div>
-                      <h3 className="font-extrabold text-lg text-brand-text">Configura tu Endpoint Privado</h3>
-                      <p className="text-[11px] text-brand-muted font-bold">Sin intermediarios ni bases de datos extras.</p>
+                      <h3 className="font-extrabold text-lg text-brand-text">Cargar Locales Candidatos</h3>
+                      <p className="text-[11px] text-brand-muted font-bold">Carga y evalúa tu lista de direcciones y coordenadas geográficas en vivo.</p>
                     </div>
                   </div>
 
                   <form onSubmit={handleTestApiFetch} className="space-y-6">
                     
                     <div className="space-y-2">
-                      <label className="text-[10px] font-black text-brand-text uppercase tracking-wider block">URL de tu API de Coordenadas (GET)</label>
+                      <label className="text-[10px] font-black text-brand-text uppercase tracking-wider block">Dirección del archivo de locales candidatos (JSON)</label>
                       <input 
                         type="url" 
                         required
                         className="w-full bg-slate-50 border border-brand-border rounded-xl p-3.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-primary font-mono text-xs text-brand-text"
-                        placeholder="https://tu-api.com/v1/coordenadas" 
+                        placeholder="https://tus-datos.com/locales-candidatos.json" 
                         value={apiUrl}
                         onChange={(e) => setApiUrl(e.target.value)}
                       />
                       <p className="text-[10px] text-brand-muted italic mt-1 leading-normal">
-                        *La API debe responder con formato de coordenadas geoespaciales. Asegúrate de que las cabeceras permitan <strong>CORS (Access-Control-Allow-Origin: *)</strong> para permitir su consumo local o directo.
+                        *El archivo debe proveer un formato de coordenadas geográficas estándar con una lista pública de locales candidatos. Asegúrate de que el enlace sea accesible de manera pública.
                       </p>
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
                       <div className="space-y-2">
-                        <label className="text-[10px] font-black text-brand-text uppercase tracking-wider block">Llave de Cabecera (Opcional)</label>
+                        <label className="text-[10px] font-black text-brand-text uppercase tracking-wider block">Clave de campo o parámetro (Opcional)</label>
                         <input 
                           type="text" 
                           className="w-full bg-slate-50 border border-brand-border rounded-xl p-3.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-primary font-mono text-xs"
-                          placeholder="p. ej. Authorization" 
+                          placeholder="p. ej. api_key o token" 
                           value={apiHeaderName}
                           onChange={(e) => setApiHeaderName(e.target.value)}
                         />
                       </div>
                       <div className="space-y-2">
-                        <label className="text-[10px] font-black text-brand-text uppercase tracking-wider block">Valor de Credencial</label>
+                        <label className="text-[10px] font-black text-brand-text uppercase tracking-wider block">Token de Acceso Privado</label>
                         <input 
                           type="text" 
                           className="w-full bg-slate-50 border border-brand-border rounded-xl p-3.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-primary font-mono text-xs"
-                          placeholder="Bearer geo_client_key..." 
+                          placeholder="p. ej. token_de_seguridad..." 
                           value={apiHeaderVal}
                           onChange={(e) => setApiHeaderVal(e.target.value)}
                         />
@@ -982,7 +990,7 @@ export default function App() {
                       <div className="bg-red-50 border border-red-100 p-4 rounded-2xl flex gap-3 text-red-800 text-xs">
                         <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0" />
                         <div>
-                          <p className="font-extrabold uppercase text-[9px] tracking-wider text-red-700">Error de conexión</p>
+                          <p className="font-extrabold uppercase text-[9px] tracking-wider text-red-700">Error de Carga</p>
                           <p className="mt-1 leading-relaxed">{apiError}</p>
                         </div>
                       </div>
@@ -992,8 +1000,8 @@ export default function App() {
                       <div className="bg-emerald-50 border border-emerald-100 p-4 rounded-2xl flex gap-3 text-emerald-800 text-xs">
                         <CheckCheck className="w-5 h-5 text-emerald-600 flex-shrink-0" />
                         <div>
-                          <p className="font-extrabold uppercase text-[9px] tracking-wider text-emerald-700">Conexión Exitosa</p>
-                          <p className="mt-1 leading-relaxed">Se han procesado {dataset.length} puntos procedentes de tu endpoint.</p>
+                          <p className="font-extrabold uppercase text-[9px] tracking-wider text-emerald-700">Carga Exitosa</p>
+                          <p className="mt-1 leading-relaxed">Se han procesado e integrado {dataset.length} puntos geográficos procedentes de tu archivo de locales.</p>
                         </div>
                       </div>
                     )}
@@ -1007,11 +1015,11 @@ export default function App() {
                       >
                         {isApiLoading ? (
                           <>
-                            <RefreshCw className="w-4 h-4 animate-spin" /> ESTABLECIENDO CONEXIÓN...
+                            <RefreshCw className="w-4 h-4 animate-spin" /> PROCESANDO ARCHIVO GEOGRÁFICO...
                           </>
                         ) : (
                           <>
-                            <Database className="w-4 h-4" /> PROBAR CONEXIÓN Y TRAER DATA
+                            <Wifi className="w-4 h-4" /> CARGAR LOCALES EN EL SIMULADOR
                           </>
                         )}
                       </button>
@@ -1032,30 +1040,52 @@ export default function App() {
                   </form>
                 </div>
 
-                {/* API JSON validation schema helpers */}
+                {/* Property list schema description */}
                 <div className="bg-brand-text text-white p-8 rounded-[32px] space-y-6">
                   <div className="flex items-center gap-3">
-                    <Code className="w-6 h-6 text-brand-secondary" />
-                    <h4 className="font-extrabold uppercase tracking-widest text-xs">Entorno API Adaptador</h4>
+                    <Compass className="w-6 h-6 text-brand-secondary" />
+                    <h4 className="font-extrabold uppercase tracking-widest text-xs">Campos y Propiedades Requeridos</h4>
                   </div>
                   <p className="text-white/70 text-sm leading-relaxed">
-                    Nuestro sistema está preparado para captar un JSON estándar. Solo debes asegurarte de que tu API exponga un esquema que responda a estas claves estructuradas en TypeScript:
+                    Para que el simulador geográfico de GeoAnalítica pueda trazar y analizar correctamente tus locales candidatos, tu archivo o feed de datos debe incluir los siguientes campos por cada local:
                   </p>
                   
-                  <div className="bg-zinc-950 p-4 rounded-2xl overflow-x-auto text-[11px] font-mono border border-zinc-800 text-zinc-300">
-                    <p className="text-brand-secondary font-black mb-1">// Estructura TypeScript Interfaces</p>
-                    <p>{"interface GISLocation {"}</p>
-                    <p>{"  id: string; // ID único"}</p>
-                    <p>{"  name: string; // Título o nombre de la tienda"}</p>
-                    <p>{"  latitude: number; // latitud"}</p>
-                    <p>{"  longitude: number; // longitud"}</p>
-                    <p>{"  trafficIndex: number; // de 1 a 100"}</p>
-                    <p>{"  competitionDensity: number; // de 1 a 100"}</p>
-                    <p>{"  targetMatchScore: number; // de 1 a 100"}</p>
-                    <p>{"  revenueProjection: number; // Número en USD"}</p>
-                    <p>{"  demographicGroup?: string;"}</p>
-                    <p>{"  category?: string;"}</p>
-                    <p>{"}"}</p>
+                  <div className="space-y-4 text-xs">
+                    <div className="grid grid-cols-3 gap-2 border-b border-white/10 pb-2">
+                      <span className="font-extrabold text-brand-secondary">Campo</span>
+                      <span className="font-extrabold text-brand-secondary">Tipo de Dato</span>
+                      <span className="font-extrabold text-brand-secondary">Descripción</span>
+                    </div>
+                    <div className="grid grid-cols-3 gap-2 border-b border-white/5 pb-2">
+                      <span className="font-mono">id</span>
+                      <span>Texto único</span>
+                      <span className="text-white/70">Identificador del local (ej. local-01).</span>
+                    </div>
+                    <div className="grid grid-cols-3 gap-2 border-b border-white/5 pb-2">
+                      <span className="font-mono">name</span>
+                      <span>Texto</span>
+                      <span className="text-white/70">Nombre descriptivo de la sucursal.</span>
+                    </div>
+                    <div className="grid grid-cols-3 gap-2 border-b border-white/5 pb-2">
+                      <span className="font-mono">latitude, longitude</span>
+                      <span>Coordenada</span>
+                      <span className="text-white/70">Coordenadas geográficas decimales en formato estándar.</span>
+                    </div>
+                    <div className="grid grid-cols-3 gap-2 border-b border-white/5 pb-2">
+                      <span className="font-mono">trafficIndex</span>
+                      <span>Número (1-100)</span>
+                      <span className="text-white/70">Índice estimado de flujo o tráfico peatonal.</span>
+                    </div>
+                    <div className="grid grid-cols-3 gap-2 border-b border-white/5 pb-2">
+                      <span className="font-mono">competitionDensity</span>
+                      <span>Número (1-100)</span>
+                      <span className="text-white/70">Saturación o cantidad de competidores cercanos.</span>
+                    </div>
+                    <div className="grid grid-cols-3 gap-2 pb-2">
+                      <span className="font-mono">revenueProjection</span>
+                      <span>Moneda (USD)</span>
+                      <span className="text-white/70">Venta anual proyectada para el local analizado.</span>
+                    </div>
                   </div>
                 </div>
 
@@ -1067,14 +1097,14 @@ export default function App() {
                 <div className="bg-slate-900 border border-zinc-800 p-8 rounded-[32px] text-white space-y-4 shadow-xl">
                   <div className="flex justify-between items-center pb-4 border-b border-zinc-800">
                     <div className="flex items-center gap-2">
-                      <Terminal className="w-5 h-5 text-emerald-400" />
-                      <p className="text-xs font-mono font-extrabold uppercase text-slate-300">EXPRESAL_SCHEMA_EXPECTED.json</p>
+                      <Compass className="w-5 h-5 text-emerald-400" />
+                      <p className="text-xs font-mono font-extrabold uppercase text-slate-300">lista_locales_candidatos.json</p>
                     </div>
-                    <span className="text-[9px] bg-slate-800 text-slate-300 px-2 py-0.5 rounded uppercase font-mono font-bold">FORMAT_GET_JSON</span>
+                    <span className="text-[9px] bg-slate-800 text-slate-300 px-2 py-0.5 rounded uppercase font-mono font-bold">VISTA_PREVIA_DATOS</span>
                   </div>
 
                   <p className="text-xs text-slate-400 font-light leading-relaxed">
-                    Los datos que tu backend entregue deben seguir un formato plano o encapsulado (como se muestra debajo) para que los gráficos y la cartografía geoespacial se actualicen automáticamente:
+                    Los locales geolocalizados que cargues deben estructurarse de esta forma para visualizar y contrastar sus indicadores de tráfico y competencia automáticamente en el simulador espacial:
                   </p>
 
                   <pre className="p-4 bg-zinc-950 rounded-2xl border border-zinc-900 text-zinc-300 font-mono text-[11px] leading-relaxed max-h-[380px] overflow-y-auto custom-scrollbar">
@@ -1082,16 +1112,16 @@ export default function App() {
                   </pre>
                 </div>
 
-                <div className="bg-white border border-brand-border p-6 rounded-[32px]">
-                  <h4 className="font-extrabold text-sm text-brand-text mb-2">¿Cómo habilitar CORS rápidamente en tu backend de API?</h4>
+                <div className="bg-white border border-brand-border p-6 rounded-[32px] space-y-3 shadow-premium">
+                  <h4 className="font-extrabold text-sm text-brand-text flex items-center gap-2">
+                    <ShieldCheck className="w-5 h-5 text-brand-primary" /> ¿Cómo se protegen tus datos?
+                  </h4>
                   <p className="text-xs text-brand-muted leading-relaxed">
-                    Si tu servidor está bloqueando la petición, añade estas cabeceras de respuesta en la configuración HTTP de tu backend local:
+                    En GeoAnalítica, la seguridad de tu estrategia de expansión comercial es nuestra máxima prioridad. Los archivos de locales que cargas se procesan de manera local e inmediata en tu navegador web.
                   </p>
-                  <div className="bg-slate-50 p-3 rounded-xl border border-brand-border font-mono text-[10px] text-brand-text mt-3">
-                    <p className="font-bold">Access-Control-Allow-Origin: *</p>
-                    <p className="font-bold">Access-Control-Allow-Methods: GET, POST, OPTIONS</p>
-                    <p className="font-bold">Access-Control-Allow-Headers: Content-Type, Authorization</p>
-                  </div>
+                  <p className="text-xs text-brand-muted leading-relaxed">
+                    Toda la información permanece privada y nunca se almacena en nuestros servidores de manera permanente. Si tu corporación requiere integraciones directas seguras con bases de datos internas, ponte en contacto con nuestro equipo de ingenieros para estructurar un canal privado dedicado.
+                  </p>
                 </div>
 
               </div>
@@ -1106,10 +1136,10 @@ export default function App() {
           <section className="max-w-7xl mx-auto px-6 py-12">
             
             <div className="mb-12 pb-8 border-b border-brand-border">
-              <span className="text-[11px] font-black text-brand-primary uppercase tracking-[0.3em]">GUÍA COMPLETA DE ENTREGABLES</span>
-              <h2 className="text-4xl font-extrabold text-brand-text tracking-tight mt-2">Cómo descargar y correr este proyecto en tu local</h2>
+              <span className="text-[11px] font-black text-brand-primary uppercase tracking-[0.3em]">METODOLOGÍA DE ANÁLISIS URBANO</span>
+              <h2 className="text-4xl font-extrabold text-brand-text tracking-tight mt-2">Guía de Evaluación y Criterios de Selección de Locales</h2>
               <p className="text-brand-muted text-sm mt-2 max-w-2xl">
-                Lleva este código premium a tu máquina de desarrollo. Sigue estas sencillas instrucciones para arrancar el servidor en pocos minutos.
+                Aprende a interpretar los datos geoespaciales y flujos de tránsito urbano para tomar decisiones de ubicación inteligentes y de bajo riesgo.
               </p>
             </div>
 
@@ -1123,9 +1153,9 @@ export default function App() {
                     1
                   </div>
                   <div>
-                    <h3 className="font-extrabold text-lg text-brand-text mb-2">Exportar / Descargar el Proyecto</h3>
+                    <h3 className="font-extrabold text-lg text-brand-text mb-2">Definir el Giro y Público Objetivo</h3>
                     <p className="text-brand-muted text-sm leading-relaxed">
-                      Usa el menú de <strong>Ajustes / Configuración del AI Studio Build</strong> en la parte superior derecha de tu pantalla y selecciona para exportar el codebase completo como un paquete <strong>ZIP</strong> o sincronizado a tu cuenta de <strong>GitHub</strong>.
+                      Identifica el tipo de negocio que deseas abrir y las características de tu cliente ideal. Esto define el radio de influencia demográfico ideal (generalmente entre 300 y 500 metros para peatones).
                     </p>
                   </div>
                 </div>
@@ -1135,13 +1165,10 @@ export default function App() {
                     2
                   </div>
                   <div>
-                    <h3 className="font-extrabold text-lg text-brand-text mb-2">Instalar Dependencias de Node</h3>
+                    <h3 className="font-extrabold text-lg text-brand-text mb-2">Analizar la Saturación de Competidores</h3>
                     <p className="text-brand-muted text-sm leading-relaxed">
-                      Descomprime la carpeta, abre tu terminal preferida (Visual Studio Code, Hyper, etc.) y ejecuta la instalación del gestor de paquetes para poblar <code className="bg-slate-100 px-2.5 py-1 rounded font-mono text-xs">node_modules</code>:
+                      Usa el simulador para localizar competidores directos e indirectos. Una concentración excesiva de marcas del mismo giro incrementa la competencia por el mismo cliente, lo que reduce la rentabilidad por local.
                     </p>
-                    <div className="bg-slate-900 text-white p-4 rounded-xl font-mono text-xs mt-3 border border-zinc-800">
-                      npm install
-                    </div>
                   </div>
                 </div>
 
@@ -1150,15 +1177,9 @@ export default function App() {
                     3
                   </div>
                   <div>
-                    <h3 className="font-extrabold text-lg text-brand-text mb-2">Arrancar el Servidor de Desarrollo Local</h3>
+                    <h3 className="font-extrabold text-lg text-brand-text mb-2">Evaluar Flujos y Movilidad Peatonal</h3>
                     <p className="text-brand-muted text-sm leading-relaxed">
-                      Vite viene preconfigurado para acelerar tus modificaciones de forma instantánea. Inicia el servidor con el comando de desarrollo:
-                    </p>
-                    <div className="bg-slate-900 text-white p-4 rounded-xl font-mono text-xs mt-3 border border-zinc-800">
-                      npm run dev
-                    </div>
-                    <p className="text-xs text-brand-muted mt-2">
-                      *El proyecto estará disponible localmente en la dirección URL: <code className="bg-slate-100 px-1 rounded font-mono text-xs text-brand-primary">http://localhost:3000</code> o <code className="bg-slate-100 px-1 rounded font-mono text-xs text-brand-primary">http://localhost:5173</code>.
+                      El local ideal debe contar con un volumen alto de tráfico peatonal de paso (personas circulando habitualmente) y una excelente cercanía a paradas de transporte público o estacionamientos.
                     </p>
                   </div>
                 </div>
@@ -1168,9 +1189,9 @@ export default function App() {
                     4
                   </div>
                   <div>
-                    <h3 className="font-extrabold text-lg text-brand-text mb-2">Personaliza el Adaptador de API</h3>
+                    <h3 className="font-extrabold text-lg text-brand-text mb-2">Calcular Proyección Financiera Espacial</h3>
                     <p className="text-brand-muted text-sm leading-relaxed">
-                      Modifica la constante <code className="bg-slate-100 px-1.5 py-0.5 rounded font-mono text-xs">MOCK_CITIES</code> o bien redirige la función de consulta en <code className="bg-slate-100 px-1.5 py-0.5 rounded font-mono text-xs">src/App.tsx</code> con tu propia URL de API fija para tus analistas y clientes de forma automatizada.
+                      Estima los ingresos comerciales basados en la afluencia de la zona y la tasa de conversión media de tu sector. Contrasta esto con los costos operativos y de alquiler para proyectar un ROI preciso antes de firmar el contrato.
                     </p>
                   </div>
                 </div>
@@ -1181,50 +1202,52 @@ export default function App() {
               <div className="lg:col-span-5 space-y-6">
                 
                 <div className="bg-white border border-brand-border p-8 rounded-[32px] shadow-sm space-y-6">
-                  <h4 className="font-extrabold text-base text-brand-text pb-3 border-b border-brand-border">Estructura Tecnológica</h4>
+                  <h4 className="font-extrabold text-base text-brand-text pb-3 border-b border-brand-border">Indicadores Geográficos Clave</h4>
                   
                   <div className="space-y-4">
                     <div className="flex justify-between items-center">
-                      <span className="text-xs text-brand-text font-bold uppercase tracking-wider">Framework Base</span>
-                      <span className="text-xs bg-brand-accent text-brand-primary px-3 py-1 rounded-lg font-black font-mono">React v19+</span>
+                      <span className="text-xs text-brand-text font-bold uppercase tracking-wider">Tráfico Flotante</span>
+                      <span className="text-xs bg-brand-accent text-brand-primary px-3 py-1 rounded-lg font-black font-mono">Peatones / Hora</span>
                     </div>
 
                     <div className="flex justify-between items-center">
-                      <span className="text-xs text-brand-text font-bold uppercase tracking-wider">Compilador & Bundler</span>
-                      <span className="text-xs bg-brand-accent text-brand-primary px-3 py-1 rounded-lg font-black font-mono">Vite v6.x</span>
+                      <span className="text-xs text-brand-text font-bold uppercase tracking-wider">Densidad Comercial</span>
+                      <span className="text-xs bg-brand-accent text-brand-primary px-3 py-1 rounded-lg font-black font-mono">Competidores / Km²</span>
                     </div>
 
                     <div className="flex justify-between items-center">
-                      <span className="text-xs text-brand-text font-bold uppercase tracking-wider">Estilización UI</span>
-                      <span className="text-xs bg-brand-accent text-brand-primary px-3 py-1 rounded-lg font-black font-mono">Tailwind CSS v4</span>
+                      <span className="text-xs text-brand-text font-bold uppercase tracking-wider">Afinidad Demográfica</span>
+                      <span className="text-xs bg-brand-accent text-brand-primary px-3 py-1 rounded-lg font-black font-mono">Match Sociodemográfico</span>
                     </div>
 
                     <div className="flex justify-between items-center">
-                      <span className="text-xs text-brand-text font-bold uppercase tracking-wider">Gráficos / Iconos</span>
-                      <span className="text-xs bg-brand-accent text-brand-primary px-3 py-1 rounded-lg font-black font-mono">Lucide Icons</span>
+                      <span className="text-xs text-brand-text font-bold uppercase tracking-wider">Accesibilidad Urbana</span>
+                      <span className="text-xs bg-brand-accent text-brand-primary px-3 py-1 rounded-lg font-black font-mono">Transporte & Conectividad</span>
                     </div>
                   </div>
 
                   <div className="p-4 bg-slate-50 border border-brand-border rounded-2xl flex items-center gap-3">
                     <ShieldCheck className="w-8 h-8 text-brand-primary flex-shrink-0" />
                     <p className="text-xs text-brand-muted leading-snug">
-                      La compilación está optimizada con TypeScript para garantizar que no existan errores de código al subir tus cambios a entornos de producción.
+                      Nuestros algoritmos cruzan la base de datos nacional del INEGI DENUE con registros de flujos urbanos para proporcionarte la mayor precisión en tus proyecciones de expansión.
                     </p>
                   </div>
                 </div>
 
                 <div className="bg-zinc-950 text-white p-6 rounded-[32px] border border-zinc-800 space-y-4">
                   <h5 className="font-bold text-sm tracking-wider uppercase text-zinc-400 flex items-center gap-2">
-                    <Terminal className="w-5 h-5 text-emerald-400" /> Scripts Prácticos
+                    <Compass className="w-5 h-5 text-brand-secondary" /> Parámetros de Éxito
                   </h5>
                   <div className="font-mono text-xs space-y-3">
-                    <div className="bg-zinc-900 p-3 rounded-lg border border-zinc-800">
-                      <p className="text-zinc-500">// Correr en local</p>
-                      <p className="text-brand-secondary font-bold">npm run dev</p>
+                    <div className="bg-zinc-900 p-4 rounded-lg border border-zinc-800 space-y-1">
+                      <p className="text-brand-secondary font-bold uppercase text-[9px] tracking-wider">Giros Peatonales (Cafés, Comida, Retail)</p>
+                      <p className="text-zinc-300">Radio ideal de análisis: 300m - 500m.</p>
+                      <p className="text-zinc-400 leading-relaxed mt-1">Requiere alto volumen de transeúntes, visibilidad a nivel de calle y aceras amplias.</p>
                     </div>
-                    <div className="bg-zinc-900 p-3 rounded-lg border border-zinc-800">
-                      <p className="text-zinc-500">// Compilar para producción (carpeta dist/)</p>
-                      <p className="text-brand-secondary font-bold">npm run build</p>
+                    <div className="bg-zinc-900 p-4 rounded-lg border border-zinc-800 space-y-1">
+                      <p className="text-brand-secondary font-bold uppercase text-[9px] tracking-wider">Giros de Destino (Servicios, Bodegas, Oficinas)</p>
+                      <p className="text-zinc-300">Radio ideal de análisis: 1km - 3km.</p>
+                      <p className="text-zinc-400 leading-relaxed mt-1">Requiere vías rápidas de acceso, facilidades de carga/descarga y estacionamiento.</p>
                     </div>
                   </div>
                 </div>
@@ -1255,7 +1278,7 @@ export default function App() {
                 </span>
               </div>
               <p className="text-sm text-zinc-400 max-w-sm leading-relaxed font-medium">
-                Sistemas de Información Geográfica y análisis de flujos automatizados de grado empresarial. Ayudamos a las corporaciones globales a expandir su presencia reduciendo el riesgo de inversión a cero.
+                Sistemas de Inteligencia Territorial y geomarketing comercial de grado profesional. Ayudamos a emprendedores, pequeños comercios y franquicias a elegir el local comercial ideal reduciendo el riesgo de inversión a cero.
               </p>
             </div>
 
@@ -1263,20 +1286,20 @@ export default function App() {
             <div>
               <h4 className="font-black text-xs uppercase tracking-widest text-[#0088cc] mb-6">Navegación</h4>
               <ul className="space-y-4 text-xs font-bold uppercase tracking-wider text-zinc-400">
-                <li><button onClick={() => { setActiveMenu('home'); window.scrollTo(0,0); }} className="hover:text-white transition-colors">Servicios</button></li>
-                <li><button onClick={() => { setActiveMenu('simulator'); window.scrollTo(0,0); }} className="hover:text-white transition-colors">Map Workbench</button></li>
-                <li><button onClick={() => { setActiveMenu('api'); window.scrollTo(0,0); }} className="hover:text-white transition-colors">Integración API</button></li>
-                <li><button onClick={() => { setActiveMenu('setup'); window.scrollTo(0,0); }} className="hover:text-white transition-colors">Instalación Local</button></li>
+                <li><button onClick={() => { setActiveMenu('home'); window.scrollTo(0,0); }} className="hover:text-white transition-colors">Inicio</button></li>
+                <li><button onClick={() => { setActiveMenu('simulator'); window.scrollTo(0,0); }} className="hover:text-white transition-colors">Simulador de Ubicación</button></li>
+                <li><button onClick={() => { setActiveMenu('api'); window.scrollTo(0,0); }} className="hover:text-white transition-colors">Estudios de Viabilidad</button></li>
+                <li><button onClick={() => { setActiveMenu('setup'); window.scrollTo(0,0); }} className="hover:text-white transition-colors">Guías de Expansión</button></li>
               </ul>
             </div>
 
             {/* Tech Specs Column */}
             <div>
-              <h4 className="font-black text-xs uppercase tracking-widest text-[#0088cc] mb-6">Soporte Técnico</h4>
+              <h4 className="font-black text-xs uppercase tracking-widest text-[#0088cc] mb-6">Servicios y Soporte</h4>
               <ul className="space-y-4 text-xs font-bold uppercase tracking-wider text-zinc-400">
-                <li><a href="#contacto" className="hover:text-white transition-colors">Solicitar Demo</a></li>
-                <li><span className="text-zinc-500">API Gateway Status: </span><span className="text-emerald-400 font-mono">ONLINE</span></li>
-                <li><span className="text-zinc-500">CORS Support: </span><span className="text-brand-secondary font-mono">ENABLED</span></li>
+                <li><a href="#contacto" className="hover:text-white transition-colors">Solicitar Auditoría</a></li>
+                <li><span className="text-zinc-500">Consultoría Estratégica: </span><span className="text-emerald-400 font-mono font-bold">DISPONIBLE</span></li>
+                <li><span className="text-zinc-500">Datos INEGI DENUE: </span><span className="text-brand-secondary font-mono font-bold">ACTUALIZADOS</span></li>
               </ul>
             </div>
 
