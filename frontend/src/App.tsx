@@ -52,30 +52,65 @@ export interface GISApiResponse {
 }
 
 // ==========================================
-// PRE-BUILT MOCK DATA (High quality, local)
+// MEXICAN STATES & DEFAULT DENUE DATA
 // ==========================================
 
-const MOCK_CITIES = {
-  "Madrid, ES": [
-    { id: "mad-01", name: "Gran Vía Premium Node", latitude: 40.4200, longitude: -3.7038, trafficIndex: 94, competitionDensity: 82, targetMatchScore: 91, revenueProjection: 420000, demographicGroup: "Turismo & Retail", category: "Retail" },
-    { id: "mad-02", name: "Serrano High Luxury Zone", latitude: 40.4285, longitude: -3.6872, trafficIndex: 88, competitionDensity: 75, targetMatchScore: 96, revenueProjection: 680000, demographicGroup: "Premium Luxury", category: "Retail" },
-    { id: "mad-03", name: "Chamberí Residential Hub", latitude: 40.4343, longitude: -3.7029, trafficIndex: 72, competitionDensity: 40, targetMatchScore: 85, revenueProjection: 310000, demographicGroup: "Young Professional", category: "Retail" },
-    { id: "mad-04", name: "Atocha Logistics Point", latitude: 40.4069, longitude: -3.6901, trafficIndex: 85, competitionDensity: 30, targetMatchScore: 78, revenueProjection: 510000, demographicGroup: "High Mobility", category: "Logistics" }
+const MEXICAN_STATES = [
+  "Aguascalientes",
+  "Baja California",
+  "Baja California Sur",
+  "Campeche",
+  "Chiapas",
+  "Chihuahua",
+  "Ciudad de México",
+  "Coahuila",
+  "Colima",
+  "Durango",
+  "Estado de México",
+  "Guanajuato",
+  "Guerrero",
+  "Hidalgo",
+  "Jalisco",
+  "Michoacán",
+  "Morelos",
+  "Nayarit",
+  "Nuevo León",
+  "Oaxaca",
+  "Puebla",
+  "Querétaro",
+  "Quintana Roo",
+  "San Luis Potosí",
+  "Sinaloa",
+  "Sonora",
+  "Tabasco",
+  "Tamaulipas",
+  "Tlaxcala",
+  "Veracruz",
+  "Yucatán",
+  "Zacatecas"
+];
+
+// Estados por defecto mostrados
+const DEFAULT_STATES = ["Aguascalientes", "Ciudad de México", "Jalisco", "Veracruz", "Estado de México"];
+
+// Mock data de ejemplo - estructura similar a DENUE
+const MOCK_DENUE = {
+  "Aguascalientes": [
+    { id: "ags-01", name: "COCINA MEXICANA", latitude: 21.85885443, longitude: -102.28254550, Clase_actividad: "Restaurantes que preparan otro tipo de alimentos para llevar", Estrato: "0 a 5 personas", Ubicacion: "AGUASCALIENTES, Aguascalientes, AGUASCALIENTES", Colonia: "MÉXICO", trafficIndex: 75, competitionDensity: 60, targetMatchScore: 85, revenueProjection: 350000, demographicGroup: "Alimentos", category: "Restaurante" },
+    { id: "ags-02", name: "TIENDA ABARROTES", latitude: 21.86100000, longitude: -102.27950000, Clase_actividad: "Tiendas de abarrotes", Estrato: "0 a 5 personas", Ubicacion: "AGUASCALIENTES, Aguascalientes, AGUASCALIENTES", Colonia: "CENTRO", trafficIndex: 68, competitionDensity: 70, targetMatchScore: 80, revenueProjection: 280000, demographicGroup: "Retail", category: "Comercio" }
   ],
-  "Barcelona, ES": [
-    { id: "bcn-01", name: "Passeig de Gràcia Core", latitude: 41.3917, longitude: 2.1649, trafficIndex: 96, competitionDensity: 88, targetMatchScore: 95, revenueProjection: 750000, demographicGroup: "High-Net Worth", category: "Retail" },
-    { id: "bcn-02", name: "Avinguda Diagonal Hub", latitude: 41.3942, longitude: 2.1481, trafficIndex: 82, competitionDensity: 60, targetMatchScore: 88, revenueProjection: 490000, demographicGroup: "Corporate Elite", category: "Office" },
-    { id: "bcn-03", name: "Poblenou Innovation District", latitude: 41.4034, longitude: 2.2032, trafficIndex: 78, competitionDensity: 45, targetMatchScore: 90, revenueProjection: 380000, demographicGroup: "Tech Talents", category: "Office" }
+  "Ciudad de México": [
+    { id: "cdmx-01", name: "PASEO DE LA REFORMA FINANCE", latitude: 19.4271, longitude: -99.1676, Clase_actividad: "Servicios Financieros", Estrato: "10 a 50 personas", Ubicacion: "CIUDAD DE MÉXICO, Cuauhtémoc, MÉXICO", Colonia: "CUAUHTÉMOC", trafficIndex: 98, competitionDensity: 85, targetMatchScore: 94, revenueProjection: 810000, demographicGroup: "Corporativo", category: "Finanzas" },
+    { id: "cdmx-02", name: "RESTAURANT POLANCO", latitude: 19.4312, longitude: -99.2007, Clase_actividad: "Restaurantes con servicio de comidas", Estrato: "10 a 50 personas", Ubicacion: "CIUDAD DE MÉXICO, Miguel Hidalgo, MÉXICO", Colonia: "POLANCO", trafficIndex: 91, competitionDensity: 80, targetMatchScore: 97, revenueProjection: 920000, demographicGroup: "Premium", category: "Alimentos" }
   ],
-  "Bogotá, CO": [
-    { id: "bog-01", name: "Zona T High Street", latitude: 4.6672, longitude: -74.0552, trafficIndex: 95, competitionDensity: 90, targetMatchScore: 93, revenueProjection: 390000, demographicGroup: "Premium Retail", category: "Retail" },
-    { id: "bog-02", name: "Parque 93 Gastro Hub", latitude: 4.6768, longitude: -74.0483, trafficIndex: 91, competitionDensity: 78, targetMatchScore: 89, revenueProjection: 360000, demographicGroup: "Lifestyle Elite", category: "Retail" },
-    { id: "bog-03", name: "Usaquén Heritage Plaza", latitude: 4.7012, longitude: -74.0305, trafficIndex: 80, competitionDensity: 50, targetMatchScore: 86, revenueProjection: 280000, demographicGroup: "Artisanal Premium", category: "Retail" }
+  "Jalisco": [
+    { id: "jal-01", name: "COMERCIO GUADALAJARA", latitude: 20.6596, longitude: -103.2497, Clase_actividad: "Comercio al por menor", Estrato: "5 a 10 personas", Ubicacion: "JALISCO, Guadalajara, MÉXICO", Colonia: "CENTRO", trafficIndex: 80, competitionDensity: 75, targetMatchScore: 88, revenueProjection: 420000, demographicGroup: "Retail", category: "Comercio" }
   ],
-  "Ciudad de México, MX": [
-    { id: "cdmx-01", name: "Paseo de la Reforma Finance", latitude: 19.4271, longitude: -99.1676, trafficIndex: 98, competitionDensity: 85, targetMatchScore: 94, revenueProjection: 810000, demographicGroup: "Corporate High", category: "Office" },
-    { id: "cdmx-02", name: "Polanco High Street", latitude: 19.4312, longitude: -99.2007, trafficIndex: 91, competitionDensity: 80, targetMatchScore: 97, revenueProjection: 920000, demographicGroup: "Super Rich", category: "Retail" },
-    { id: "cdmx-03", name: "La Condesa Lifestyle Node", latitude: 19.4121, longitude: -99.1722, trafficIndex: 84, competitionDensity: 55, targetMatchScore: 89, revenueProjection: 440000, demographicGroup: "High Tech Hipster", category: "Retail" }
+  "Veracruz": [
+    { id: "ver-01", name: "NEGOCIOS VERACRUZ", latitude: 19.2000, longitude: -96.1333, Clase_actividad: "Servicios varios", Estrato: "0 a 5 personas", Ubicacion: "VERACRUZ, Veracruz, MÉXICO", Colonia: "PUERTO", trafficIndex: 70, competitionDensity: 55, targetMatchScore: 75, revenueProjection: 300000, demographicGroup: "General", category: "Servicios" }
+  ],
+  "Estado de México": [
+    { id: "edomx-01", name: "PLAZA COMERCIAL TOLUCA", latitude: 19.2887, longitude: -99.6547, Clase_actividad: "Comercio al por menor", Estrato: "10 a 50 personas", Ubicacion: "ESTADO DE MÉXICO, Toluca, MÉXICO", Colonia: "CENTRO", trafficIndex: 76, competitionDensity: 68, targetMatchScore: 82, revenueProjection: 380000, demographicGroup: "Retail", category: "Comercio" }
   ]
 };
 
@@ -91,13 +126,16 @@ export default function App() {
   const [apiError, setApiError] = useState<string | null>(null);
   
   // Loaded Dataset (Can come from Live API or our simulated data)
-  const [currentCityName, setCurrentCityName] = useState<string>("Madrid, ES");
-  const [dataset, setDataset] = useState<GISLocation[]>(MOCK_CITIES["Madrid, ES"]);
+  const [currentStateName, setCurrentStateName] = useState<string>("Aguascalientes");
+  const [dataset, setDataset] = useState<GISLocation[]>(MOCK_DENUE["Aguascalientes"]);
   const [dataSource, setDataSource] = useState<"live-api" | "local-simulated">("local-simulated");
   const [apiResponseFull, setApiResponseFull] = useState<any | null>(null);
 
+  // State search filter
+  const [stateSearchQuery, setStateSearchQuery] = useState<string>("");
+  
   // Selector filters
-  const [selectedLocation, setSelectedLocation] = useState<GISLocation | null>(MOCK_CITIES["Madrid, ES"][0]);
+  const [selectedLocation, setSelectedLocation] = useState<GISLocation | null>(MOCK_DENUE["Aguascalientes"][0]);
   const [filterCategory, setFilterCategory] = useState<string>("All");
   const [mapLayer, setMapLayer] = useState<'traffic' | 'competition' | 'demographics'>('traffic');
 
@@ -120,14 +158,23 @@ export default function App() {
     }
   }, [dataset]);
 
-  // Handle local city simulation selection
-  const handleSelectCity = (cityName: string) => {
-    setCurrentCityName(cityName);
-    setDataset(MOCK_CITIES[cityName as keyof typeof MOCK_CITIES] || []);
+  // Handle local state simulation selection
+  const handleSelectState = (stateName: string) => {
+    setCurrentStateName(stateName);
+    setDataset(MOCK_DENUE[stateName as keyof typeof MOCK_DENUE] || []);
     setDataSource("local-simulated");
     setApiResponseFull(null);
     setApiError(null);
+    setStateSearchQuery("");
   };
+  
+  // Filter states based on search query
+  const filteredStates = MEXICAN_STATES.filter((state) =>
+    state.toLowerCase().includes(stateSearchQuery.toLowerCase())
+  );
+  
+  // Get visible states (default + search results)
+  const visibleStates = stateSearchQuery.length > 0 ? filteredStates : DEFAULT_STATES;
 
   // Test Fetch API Client
   const handleTestApiFetch = async (e: React.FormEvent) => {
@@ -189,7 +236,7 @@ export default function App() {
 
       setDataset(santized);
       setDataSource("live-api");
-      setCurrentCityName("Archivo de Datos");
+      setCurrentStateName("Archivo de Datos");
       
     } catch (err: any) {
       console.error(err);
@@ -617,7 +664,7 @@ export default function App() {
                 <div>
                   <p className="text-[9px] font-black uppercase text-brand-muted tracking-wider">Origen de la Información</p>
                   <p className="text-xs font-extrabold text-brand-text">
-                    {dataSource === 'live-api' ? 'DATOS DE CLIENTE CARGADOS' : `SIMULACIÓN COMERCIAL: "${currentCityName}"`}
+                    {dataSource === 'live-api' ? 'DATOS DE CLIENTE CARGADOS' : `SIMULACIÓN COMERCIAL: "${currentStateName}"`}
                   </p>
                 </div>
               </div>
@@ -797,15 +844,29 @@ export default function App() {
                   <h4 className="text-[10px] font-black text-brand-primary uppercase tracking-[0.2em] mb-4">Zona de Análisis</h4>
                   
                   <div className="space-y-3">
-                    <label className="text-[11px] font-bold text-brand-muted uppercase block">Seleccionar Ciudad:</label>
-                    <div className="grid grid-cols-2 gap-2">
-                      {Object.keys(MOCK_CITIES).map((city) => (
+                    <label className="text-[11px] font-bold text-brand-muted uppercase block">Seleccionar Estado:</label>
+                    
+                    {/* Search Input */}
+                    <div className="relative mb-3">
+                      <Search className="absolute left-3 top-3 w-4 h-4 text-brand-muted" />
+                      <input 
+                        type="text" 
+                        placeholder="Buscar estado..." 
+                        value={stateSearchQuery}
+                        onChange={(e) => setStateSearchQuery(e.target.value)}
+                        className="w-full pl-10 pr-3 py-2.5 text-sm border border-brand-border rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-primary bg-slate-50"
+                      />
+                    </div>
+                    
+                    {/* States Grid */}
+                    <div className="grid grid-cols-2 gap-2 max-h-40 overflow-y-auto">
+                      {visibleStates.map((state) => (
                         <button
-                          key={city}
-                          onClick={() => handleSelectCity(city)}
-                          className={`text-xs font-black p-3 rounded-xl border text-left transition-all ${currentCityName === city && dataSource === 'local-simulated' ? 'bg-brand-primary border-brand-primary text-white shadow-premium' : 'bg-slate-50 border-brand-border text-brand-text hover:bg-brand-accent/50'}`}
+                          key={state}
+                          onClick={() => handleSelectState(state)}
+                          className={`text-xs font-black p-3 rounded-xl border text-left transition-all ${currentStateName === state && dataSource === 'local-simulated' ? 'bg-brand-primary border-brand-primary text-white shadow-premium' : 'bg-slate-50 border-brand-border text-brand-text hover:bg-brand-accent/50'}`}
                         >
-                          {city}
+                          {state}
                         </button>
                       ))}
                     </div>
@@ -1028,7 +1089,7 @@ export default function App() {
                         <button 
                           type="button"
                           onClick={() => {
-                            handleSelectCity("Madrid, ES");
+                            handleSelectState("Aguascalientes");
                           }}
                           className="bg-white border border-brand-border hover:bg-slate-50 text-brand-text p-4.5 rounded-2xl text-[11px] font-black uppercase tracking-widest transition-all"
                         >
